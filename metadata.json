@@ -1,0 +1,5 @@
+{
+  "name": "FODMAP Meal Planner",
+  "description": "An application to help manage a FODMAP diet and plan meals by calculating FODMAP loads to avoid stacking. It includes a comprehensive database of foods and their safe serving sizes.",
+  "requestFramePermissions": []
+}
