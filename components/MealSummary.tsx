@@ -28,25 +28,29 @@ const calculateMealCalories = (meal: MealItem[]): number => {
 
 
 const MealSummary: React.FC<MealSummaryProps> = ({ meal, onClearMeal, onOpenSaveModal }) => {
-  const { totalFodmapLoad, contributingFodmaps } = useMemo(() => {
-    let totalLoad = 0;
-    const contributing = new Set<FodmapType>();
+  const { fodmapLoads } = useMemo(() => {
+    const loads: Partial<Record<FodmapType, number>> = {};
 
     meal.forEach(item => {
       const { food, currentAmount } = item;
       if (food.fodmaps.length > 0 && food.safeAmount > 0 && currentAmount > 0) {
-        totalLoad += currentAmount / food.safeAmount;
-        food.fodmaps.forEach(f => contributing.add(f.type));
+        const itemLoad = currentAmount / food.safeAmount;
+        food.fodmaps.forEach(fodmapInfo => {
+          const { type } = fodmapInfo;
+          loads[type] = (loads[type] || 0) + itemLoad;
+        });
       }
     });
-
-    return { totalFodmapLoad: totalLoad, contributingFodmaps: Array.from(contributing) };
+    
+    return { fodmapLoads: loads };
   }, [meal]);
 
 
   const totalCalories = useMemo(() => calculateMealCalories(meal), [meal]);
 
   const isMealEmpty = meal.length === 0;
+  
+  const fodmapEntries = Object.entries(fodmapLoads).filter(([, load]) => load > 0);
 
   return (
     <div className="sticky top-8 bg-white p-6 rounded-lg shadow">
@@ -67,22 +71,18 @@ const MealSummary: React.FC<MealSummaryProps> = ({ meal, onClearMeal, onOpenSave
         </div>
       ) : (
         <div className="space-y-4">
-          <p className="text-sm text-gray-600">Este resumo calcula a carga FODMAP total da sua refeição. Uma carga combinada superior a 100% de vários alimentos (mesmo de grupos FODMAP diferentes) pode causar sintomas devido à "acumulação".</p>
+          <p className="text-sm text-gray-600">Este resumo calcula a carga para cada grupo FODMAP. Uma carga superior a 100% num grupo pode causar sintomas devido à "acumulação". Grupos diferentes não acumulam entre si.</p>
           <div className="space-y-3 pt-2">
-            {totalFodmapLoad > 0 ? (
-              <div>
+            {fodmapEntries.length > 0 ? (
+               fodmapEntries.map(([type, load]) => (
                 <FodmapIndicator
-                  name="Carga FODMAP Total da Refeição"
-                  load={totalFodmapLoad}
-                  warningThreshold={100}
-                  dangerThreshold={150}
+                  key={type}
+                  name={`Carga de ${type}`}
+                  load={load}
+                  warningThreshold={75}
+                  dangerThreshold={100}
                 />
-                {contributingFodmaps.length > 0 && (
-                   <div className="text-xs text-gray-600 mt-2">
-                    <span className="font-semibold">FODMAPs presentes:</span> {contributingFodmaps.join(', ')}
-                  </div>
-                )}
-              </div>
+              ))
             ) : (
                 <div className="text-center py-4">
                     <p className="text-green-700 font-medium">✅ Refeição baixa em FODMAPs nas quantidades selecionadas.</p>
