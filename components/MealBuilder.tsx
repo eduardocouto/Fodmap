@@ -8,6 +8,7 @@ interface MealBuilderProps {
   onAddFood: (food: FoodItem) => void;
   onRemoveFood: (instanceId: string) => void;
   onUpdateAmount: (instanceId: string, amount: number) => void;
+  individualLoads: Record<string, number>;
 }
 
 // Levenshtein distance function for fuzzy matching
@@ -35,7 +36,7 @@ const levenshtein = (a: string, b: string): number => {
 };
 
 
-const MealBuilder: React.FC<MealBuilderProps> = ({ foods, meal, onAddFood, onRemoveFood, onUpdateAmount }) => {
+const MealBuilder: React.FC<MealBuilderProps> = ({ foods, meal, onAddFood, onRemoveFood, onUpdateAmount, individualLoads }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [fodmapFilter, setFodmapFilter] = useState<'all' | 'low' | 'high'>('all');
   const [recentlyAddedId, setRecentlyAddedId] = useState<string | null>(null);
@@ -166,7 +167,7 @@ const MealBuilder: React.FC<MealBuilderProps> = ({ foods, meal, onAddFood, onRem
         <div className="space-y-4">
           {meal.length > 0 ? (
             meal.map(item => {
-              const individualLoad = item.food.safeAmount > 0 ? (item.currentAmount / item.food.safeAmount) * 100 : 0;
+              const individualLoad = individualLoads[item.instanceId] || 0;
               let loadColor = 'text-emerald-700';
               if (individualLoad > 100) {
                 loadColor = 'text-red-700';

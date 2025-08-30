@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import type { MealItem, FoodItem, MealTemplate, WeeklyPlan, DayPlan, MealSlot, ShuffleOption, FoodFodmapInfo } from './types';
+import type { MealItem, FoodItem, MealTemplate, WeeklyPlan, DayPlan, MealSlot, ShuffleOption, FoodFodmapInfo, FoodPreferences, PlanTab } from './types';
 import { ALL_FOODS } from './constants/foods';
 import { MEAL_TEMPLATES } from './constants/mealTemplates';
 import Header from './components/Header';
@@ -7,14 +7,19 @@ import MealBuilder from './components/MealBuilder';
 import MealSummary from './components/MealSummary';
 import ForbiddenFoods from './components/ForbiddenFoods';
 import QuickMealSelector from './components/QuickMealSelector';
+import AntiInflammatoryPlanSelector from './components/AntiInflammatoryPlanSelector';
+import DetoxPlanSelector from './components/DetoxPlanSelector';
+import SoupSelector from './components/SoupSelector';
 import MealShuffler from './components/MealShuffler';
 import WeeklyPlanner from './components/WeeklyPlanner';
 import SaveToPlanModal from './components/SaveToPlanModal';
 import ShoppingList from './components/ShoppingList';
 import ToastNotification from './components/ToastNotification';
+import PlanGenerator from './components/PlanGenerator';
+import { calculateFodmapLoads, calculateMealCalories } from './utils/mealUtils';
 import { MealSlot as MealSlotEnum, FodmapType, FructanGroup } from './types';
 
-type Tab = 'planner' | 'weekly' | 'shopping' | 'customFood' | 'forbidden';
+type Tab = 'planner' | 'guidedPlans' | 'generator' | 'weekly' | 'shopping' | 'customFood' | 'forbidden';
 
 interface ToastInfo {
   id: number;
@@ -22,6 +27,8 @@ interface ToastInfo {
   actionLabel?: string;
   onAction?: () => void;
 }
+
+const DAYS_OF_WEEK = ['Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado', 'Domingo'];
 
 const CustomFoodManager: React.FC<{
   customFoods: FoodItem[];
@@ -136,42 +143,48 @@ const CustomFoodManager: React.FC<{
 const App: React.FC = () => {
   const [meal, setMeal] = useState<MealItem[]>([]);
   const [activeTab, setActiveTab] = useState<Tab>('planner');
+  const [activePlanTab, setActivePlanTab] = useState<PlanTab>('anti-inflammatory');
   const [weeklyPlan, setWeeklyPlan] = useState<WeeklyPlan>({});
   const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
   const [customFoods, setCustomFoods] = useState<FoodItem[]>([]);
   const [dailyCalorieGoal, setDailyCalorieGoal] = useState<number>(2000);
   const [toast, setToast] = useState<ToastInfo | null>(null);
+  const [foodPreferences, setFoodPreferences] = useState<FoodPreferences>({});
+  const [isGenerating, setIsGenerating] = useState<boolean>(false);
 
   // Load data from localStorage on initial render
   useEffect(() => {
-    // Plan
-    try {
-      const savedPlan = localStorage.getItem('fodmapWeeklyPlan');
-      if (savedPlan) setWeeklyPlan(JSON.parse(savedPlan));
-    } catch (error) { console.error("Failed to load weekly plan", error); }
-    // Custom Foods
-     try {
-      const savedFoods = localStorage.getItem('fodmapCustomFoods');
-      if (savedFoods) setCustomFoods(JSON.parse(savedFoods));
-    } catch (error) { console.error("Failed to load custom foods", error); }
-    // Calorie Goal
-    try {
-      const savedGoal = localStorage.getItem('fodmapCalorieGoal');
-      if (savedGoal) setDailyCalorieGoal(JSON.parse(savedGoal));
-    } catch (error) { console.error("Failed to load calorie goal", error); }
+    const loadData = () => {
+        try {
+            const savedPlan = localStorage.getItem('fodmapWeeklyPlan');
+            if (savedPlan) setWeeklyPlan(JSON.parse(savedPlan));
 
+            const savedFoods = localStorage.getItem('fodmapCustomFoods');
+            if (savedFoods) setCustomFoods(JSON.parse(savedFoods));
+            
+            const savedGoal = localStorage.getItem('fodmapCalorieGoal');
+            if (savedGoal) setDailyCalorieGoal(JSON.parse(savedGoal));
+            
+            const savedPrefs = localStorage.getItem('fodmapFoodPreferences');
+            if (savedPrefs) setFoodPreferences(JSON.parse(savedPrefs));
+        } catch (error) {
+            console.error("Failed to load data from localStorage", error);
+        }
+    };
+    loadData();
   }, []);
 
-  // Save other states to localStorage
+  // Save data to localStorage
   useEffect(() => {
     try {
-      localStorage.setItem('fodmapWeeklyPlan', JSON.stringify(weeklyPlan));
-      localStorage.setItem('fodmapCustomFoods', JSON.stringify(customFoods));
-      localStorage.setItem('fodmapCalorieGoal', JSON.stringify(dailyCalorieGoal));
+        localStorage.setItem('fodmapWeeklyPlan', JSON.stringify(weeklyPlan));
+        localStorage.setItem('fodmapCustomFoods', JSON.stringify(customFoods));
+        localStorage.setItem('fodmapCalorieGoal', JSON.stringify(dailyCalorieGoal));
+        localStorage.setItem('fodmapFoodPreferences', JSON.stringify(foodPreferences));
     } catch (error) {
       console.error("Failed to save data to localStorage", error);
     }
-  }, [weeklyPlan, customFoods, dailyCalorieGoal]);
+  }, [weeklyPlan, customFoods, dailyCalorieGoal, foodPreferences]);
   
   useEffect(() => {
     if (toast) {
@@ -184,6 +197,16 @@ const App: React.FC = () => {
 
   const combinedFoods = useMemo(() => [...ALL_FOODS, ...customFoods].sort((a,b) => a.name.localeCompare(b.name)), [customFoods]);
 
+  const mealAnalysis = useMemo(() => {
+    const { fodmapLoads, individualLoads } = calculateFodmapLoads(meal);
+    const totalCalories = calculateMealCalories(meal);
+    return { 
+      fodmapLoads, 
+      individualLoads,
+      totalCalories
+    };
+  }, [meal]);
+  
   const addCustomFood = (food: FoodItem) => setCustomFoods(prev => [...prev, food]);
   const deleteCustomFood = (foodId: string) => {
     if(window.confirm("Tem a certeza que quer remover este alimento?")) {
@@ -230,6 +253,15 @@ const App: React.FC = () => {
     setMeal(newMealItems);
   };
   
+  const handleSelectGuidedMeal = (template: MealTemplate) => {
+    addQuickMeal(template);
+    setActiveTab('planner');
+    setToast({
+      id: Date.now(),
+      message: 'Refeição carregada! Analise os FODMAPs.',
+    });
+  };
+
   const shuffleMeal = (slot: ShuffleOption) => {
     const getSoups = () => MEAL_TEMPLATES.filter(t => t.type === 'soup');
     if (slot === 'Sopa') {
@@ -300,25 +332,15 @@ const App: React.FC = () => {
 
   const clearMealFromPlan = (day: string, slot: MealSlot) => {
     setWeeklyPlan(prevPlan => {
-      // Return original plan if the day or slot doesn't exist to clear
       if (!prevPlan[day]?.[slot]) {
         return prevPlan;
       }
-      
-      // Create a new day plan object without the specified slot
       const { [slot]: _, ...updatedDayPlan } = prevPlan[day];
-  
-      // If the day becomes empty after removing the slot
       if (Object.keys(updatedDayPlan).length === 0) {
-        // Create a new weekly plan object without the empty day
         const { [day]: __, ...updatedWeeklyPlan } = prevPlan;
         return updatedWeeklyPlan;
       } else {
-        // Otherwise, return a new weekly plan with the updated day
-        return {
-          ...prevPlan,
-          [day]: updatedDayPlan,
-        };
+        return { ...prevPlan, [day]: updatedDayPlan };
       }
     });
   };
@@ -343,40 +365,155 @@ const App: React.FC = () => {
     });
   };
 
+  const generateWeeklyPlan = () => {
+    setIsGenerating(true);
+
+    setTimeout(() => {
+        const newPlan: WeeklyPlan = {};
+
+        const calorieTargets: Record<MealSlot, number> = {
+            [MealSlotEnum.BREAKFAST]: dailyCalorieGoal * 0.25,
+            [MealSlotEnum.LUNCH]: dailyCalorieGoal * 0.35,
+            [MealSlotEnum.DINNER]: dailyCalorieGoal * 0.30,
+            [MealSlotEnum.AFTERNOON_SNACK]: dailyCalorieGoal * 0.05,
+            [MealSlotEnum.SNACKS]: dailyCalorieGoal * 0.05,
+        };
+        const calorieTolerance = 0.15; // Allow 15% deviation from target
+
+        DAYS_OF_WEEK.forEach(day => {
+            newPlan[day] = {};
+            (Object.values(MealSlotEnum) as MealSlot[]).forEach(slot => {
+                const prefs = foodPreferences[slot] || [];
+                const foodPool = combinedFoods.filter(f => prefs.includes(f.id));
+                
+                if (foodPool.length === 0) return;
+
+                const itemCount = (slot === MealSlotEnum.SNACKS || slot === MealSlotEnum.AFTERNOON_SNACK) ? 2 : 3 + Math.floor(Math.random() * 2);
+                
+                let meal: MealItem[] = [];
+                const shuffledPool = [...foodPool].sort(() => 0.5 - Math.random());
+                
+                for (let i = 0; i < Math.min(itemCount, shuffledPool.length); i++) {
+                    const food = shuffledPool[i];
+                    meal.push({
+                        instanceId: crypto.randomUUID(),
+                        food: food,
+                        currentAmount: food.safeAmount > 0 ? food.safeAmount : (food.unit.includes('unidade') ? 1 : 100),
+                    });
+                }
+                
+                let safetyBreak = 50;
+                while (safetyBreak > 0) {
+                    const { fodmapLoads } = calculateFodmapLoads(meal);
+                    const currentCalories = calculateMealCalories(meal);
+                    const calorieTarget = calorieTargets[slot];
+
+                    const overloadedFodmaps = Object.entries(fodmapLoads).filter(([, load]) => load > 1.0);
+
+                    if (overloadedFodmaps.length > 0) {
+                        const [typeToReduce] = overloadedFodmaps[0];
+                        const contributingItems = meal
+                            .map(item => ({
+                                item,
+                                itemLoad: item.food.safeAmount > 0 ? (item.currentAmount / item.food.safeAmount) : 0,
+                                contributes: item.food.fodmaps.some(f => f.type === typeToReduce)
+                            }))
+                            .filter(i => i.contributes && i.itemLoad > 0)
+                            .sort((a, b) => b.itemLoad - a.itemLoad);
+                        
+                        if (contributingItems.length > 0) {
+                            const itemToAdjust = contributingItems[0].item;
+                            meal = meal.map(item => 
+                                item.instanceId === itemToAdjust.instanceId 
+                                    ? { ...item, currentAmount: Math.max(0, Math.round(item.currentAmount * 0.9)) }
+                                    : item
+                            ).filter(item => item.currentAmount > 0);
+                        } else {
+                           break;
+                        }
+                    } else if (currentCalories > calorieTarget * (1 + calorieTolerance)) {
+                        const excessRatio = (calorieTarget * (1 + calorieTolerance)) / currentCalories;
+                        meal = meal.map(item => ({
+                            ...item,
+                            currentAmount: Math.max(1, Math.round(item.currentAmount * excessRatio))
+                        }));
+                    } else if (currentCalories < calorieTarget * (1 - calorieTolerance) && calorieTarget > 0) {
+                        const deficitRatio = (calorieTarget * (1 - calorieTolerance)) / currentCalories;
+                        if(deficitRatio > 0 && isFinite(deficitRatio)) {
+                            meal = meal.map(item => ({
+                                ...item,
+                                currentAmount: Math.round(item.currentAmount * deficitRatio)
+                            }));
+                        } else {
+                            break;
+                        }
+                    } else {
+                        break;
+                    }
+                    safetyBreak--;
+                }
+                newPlan[day][slot] = meal.filter(item => item.currentAmount > 0);
+            });
+        });
+
+        setWeeklyPlan(newPlan);
+        setIsGenerating(false);
+        setActiveTab('weekly');
+        setToast({ id: Date.now(), message: 'Plano semanal gerado com sucesso!' });
+    }, 100);
+  };
+
 
   const getTabClassName = (tabName: Tab) => {
-    const base = 'flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium rounded-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500';
+    const base = 'flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500';
     if (activeTab === tabName) {
       return `${base} bg-white text-emerald-600 shadow-sm`;
     }
     return `${base} bg-transparent text-gray-500 hover:bg-white/60 hover:text-emerald-600`;
   };
 
+  const getPlanTabClassName = (planTabName: PlanTab) => {
+    const base = 'px-4 py-2 text-sm font-semibold rounded-md transition-colors';
+    if (activePlanTab === planTabName) {
+      return `${base} bg-emerald-600 text-white`;
+    }
+    return `${base} bg-gray-100 text-gray-700 hover:bg-gray-200`;
+  };
+
+
   return (
     <div className="min-h-screen bg-gray-50 text-gray-800">
       <Header />
       <main className="container mx-auto p-4 sm:p-6 md:p-8">
-        <nav className="mb-8 bg-gray-100 p-2 rounded-xl shadow-inner max-w-4xl mx-auto">
-          <div className="flex flex-col sm:flex-row justify-center space-y-2 sm:space-y-0 sm:space-x-1">
+        <nav className="mb-8 bg-gray-100 p-2 rounded-xl shadow-inner max-w-5xl mx-auto">
+          <div className="flex flex-wrap justify-center gap-1">
             <button onClick={() => setActiveTab('planner')} className={getTabClassName('planner')} aria-pressed={activeTab === 'planner'} aria-label="Construtor de Refeições">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
-              <span className="hidden sm:inline">Construtor</span>
+              <span className="hidden md:inline">Construtor</span>
+            </button>
+            <button onClick={() => setActiveTab('guidedPlans')} className={getTabClassName('guidedPlans')} aria-pressed={activeTab === 'guidedPlans'} aria-label="Planos Guiados">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M3 5a2 2 0 012-2h10a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V5zm3 1a1 1 0 000 2h8a1 1 0 100-2H6zM6 9a1 1 0 000 2h8a1 1 0 100-2H6zm0 4a1 1 0 100 2h4a1 1 0 100-2H6z" clipRule="evenodd" /></svg>
+              <span className="hidden md:inline">Planos Guiados</span>
+            </button>
+             <button onClick={() => setActiveTab('generator')} className={getTabClassName('generator')} aria-pressed={activeTab === 'generator'} aria-label="Gerador de Planos">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v1.946l.06.06A8.5 8.5 0 0119.5 10.5a1 1 0 11-2 0 6.5 6.5 0 00-5.443-6.443l-.06-.06V2a1 1 0 01-.954-.954l-.046-.046zM2 10.5a8.5 8.5 0 016.443-8.443l.06-.06V2a1 1 0 012 0v1.946l.06.06A8.5 8.5 0 0118 10.5a1 1 0 01-2 0 6.5 6.5 0 00-13 0 1 1 0 01-2 0zm5.121 4.879A2.5 2.5 0 0110.5 12a2.5 2.5 0 012.379 3.379l.06.121a3.5 3.5 0 01-4.878 0l.06-.121z" clipRule="evenodd" /></svg>
+                <span className="hidden md:inline">Gerador</span>
             </button>
             <button onClick={() => setActiveTab('weekly')} className={getTabClassName('weekly')} aria-pressed={activeTab === 'weekly'} aria-label="Plano Semanal">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" /></svg>
-              <span className="hidden sm:inline">Plano Semanal</span>
+              <span className="hidden md:inline">Plano Semanal</span>
             </button>
             <button onClick={() => setActiveTab('shopping')} className={getTabClassName('shopping')} aria-pressed={activeTab === 'shopping'} aria-label="Lista de Compras">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" /></svg>
-              <span className="hidden sm:inline">Lista de Compras</span>
+              <span className="hidden md:inline">Lista de Compras</span>
             </button>
             <button onClick={() => setActiveTab('customFood')} className={getTabClassName('customFood')} aria-pressed={activeTab === 'customFood'} aria-label="Meus Alimentos">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" /></svg>
-              <span className="hidden sm:inline">Meus Alimentos</span>
+              <span className="hidden md:inline">Meus Alimentos</span>
             </button>
             <button onClick={() => setActiveTab('forbidden')} className={getTabClassName('forbidden')} aria-pressed={activeTab === 'forbidden'} aria-label="Alimentos a Evitar">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 3.001-1.742 3.001H4.42c-1.53 0-2.493-1.667-1.743-3.001l5.58-9.92zM10 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" /></svg>
-              <span className="hidden sm:inline">Alimentos a Evitar</span>
+              <span className="hidden md:inline">Alimentos a Evitar</span>
             </button>
           </div>
         </nav>
@@ -393,13 +530,58 @@ const App: React.FC = () => {
                   onAddFood={addFoodToMeal}
                   onRemoveFood={removeFoodFromMeal}
                   onUpdateAmount={updateFoodAmount}
+                  individualLoads={mealAnalysis.individualLoads}
                 />
               </div>
               <div className="lg:col-span-2">
-                <MealSummary meal={meal} onClearMeal={clearMeal} onOpenSaveModal={() => setIsSaveModalOpen(true)} />
+                <MealSummary
+                  meal={meal}
+                  onClearMeal={clearMeal}
+                  onOpenSaveModal={() => setIsSaveModalOpen(true)}
+                  fodmapLoads={mealAnalysis.fodmapLoads}
+                  totalCalories={mealAnalysis.totalCalories}
+                />
               </div>
             </div>
           </div>
+        )}
+        
+        {activeTab === 'guidedPlans' && (
+          <div className="space-y-6">
+            <div className="bg-white p-4 sm:p-6 rounded-lg shadow">
+              <h2 className="text-2xl font-semibold text-gray-800">Planos Guiados</h2>
+              <p className="mt-2 text-gray-600 mb-6">
+                Explore os nossos planos de refeições temáticos para inspiração. Selecione uma categoria abaixo para ver as receitas e carregá-las no construtor.
+              </p>
+              
+              <div className="flex flex-wrap gap-2">
+                <button onClick={() => setActivePlanTab('anti-inflammatory')} className={getPlanTabClassName('anti-inflammatory')}>
+                  Plano Anti-Inflamatório
+                </button>
+                <button onClick={() => setActivePlanTab('detox')} className={getPlanTabClassName('detox')}>
+                  Sumos e Batidos Detox
+                </button>
+                <button onClick={() => setActivePlanTab('soups')} className={getPlanTabClassName('soups')}>
+                  Sopas Anti-inflamatórias
+                </button>
+              </div>
+            </div>
+
+            {activePlanTab === 'anti-inflammatory' && <AntiInflammatoryPlanSelector onSelectMeal={handleSelectGuidedMeal} />}
+            {activePlanTab === 'detox' && <DetoxPlanSelector onSelectMeal={handleSelectGuidedMeal} />}
+            {activePlanTab === 'soups' && <SoupSelector onSelectMeal={handleSelectGuidedMeal} />}
+          </div>
+        )}
+
+
+        {activeTab === 'generator' && (
+          <PlanGenerator 
+            allFoods={combinedFoods}
+            preferences={foodPreferences}
+            onPreferencesChange={setFoodPreferences}
+            onGeneratePlan={generateWeeklyPlan}
+            isGenerating={isGenerating}
+          />
         )}
         
         {activeTab === 'weekly' && (

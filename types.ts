@@ -7,6 +7,8 @@ export enum FodmapType {
   LACTOSE = 'Lactose',
 }
 
+export type PlanTab = 'anti-inflammatory' | 'detox' | 'soups';
+
 export enum FructanGroup {
   FRUIT_VEG = 'Frutas e Legumes',
   CEREAL = 'Cereais',
@@ -52,7 +54,8 @@ export interface MealTemplate {
   description: string;
   items: MealTemplateItem[];
   type?: 'recipe' | 'soup';
-  category: MealSlot | 'Sopa';
+  // FIX: Changed category type to string to allow for custom categories from AI plans.
+  category: string;
 }
 
 // Types for Weekly Planner
@@ -73,3 +76,10 @@ export type WeeklyPlan = {
 };
 
 export type ShuffleOption = MealSlot | 'Sopa';
+
+// Types for Plan Generator
+export type FoodCategory = 'Proteína' | 'Fruta' | 'Legumes' | 'Cereais' | 'Laticínios' | 'Sementes' | 'Pastas' | 'Frutos Oleaginosos' | 'Leguminosas' | 'Substitutos vegetarianos' | 'Doces' | 'Outros';
+
+export type FoodPreferences = {
+  [key in MealSlot]?: string[]; // Array of food IDs
+};

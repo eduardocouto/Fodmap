@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import type { WeeklyPlan, MealSlot, MealItem, FoodItem } from '../types';
 import { MealSlot as MealSlotEnum } from '../types';
 import EditMealModal from './EditMealModal';
+import { calculateMealCalories } from '../utils/mealUtils';
 
 interface WeeklyPlannerProps {
   plan: WeeklyPlan;
@@ -16,22 +17,6 @@ interface WeeklyPlannerProps {
 
 const DAYS_OF_WEEK = ['Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado', 'Domingo'];
 const MEAL_SLOTS = [MealSlotEnum.BREAKFAST, MealSlotEnum.LUNCH, MealSlotEnum.AFTERNOON_SNACK, MealSlotEnum.DINNER, MealSlotEnum.SNACKS];
-
-const calculateMealCalories = (meal: MealItem[]): number => {
-    if (!meal) return 0;
-    return meal.reduce((total, item) => {
-      const { food, currentAmount } = item;
-      if (typeof food.calories !== 'number') return total;
-      
-      let itemCalories = 0;
-      if (food.unit.includes('g') || food.unit.includes('ml')) {
-        itemCalories = (currentAmount / 100) * food.calories;
-      } else {
-        itemCalories = currentAmount * food.calories;
-      }
-      return total + (itemCalories || 0);
-    }, 0);
-};
 
 type CalorieStatus = 'good' | 'warning' | 'high';
 

@@ -1,5 +1,5 @@
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import type { MealItem } from '../types';
 import { FodmapType } from '../types';
 import FodmapIndicator from './FodmapIndicator';
@@ -8,46 +8,11 @@ interface MealSummaryProps {
   meal: MealItem[];
   onClearMeal: () => void;
   onOpenSaveModal: () => void;
+  fodmapLoads: Partial<Record<FodmapType, number>>;
+  totalCalories: number;
 }
 
-const calculateMealCalories = (meal: MealItem[]): number => {
-    if (!meal) return 0;
-    return meal.reduce((total, item) => {
-      const { food, currentAmount } = item;
-      if (typeof food.calories !== 'number') return total;
-      
-      let itemCalories = 0;
-      if (food.unit.includes('g') || food.unit.includes('ml')) {
-        itemCalories = (currentAmount / 100) * food.calories;
-      } else {
-        itemCalories = currentAmount * food.calories;
-      }
-      return total + (itemCalories || 0);
-    }, 0);
-};
-
-
-const MealSummary: React.FC<MealSummaryProps> = ({ meal, onClearMeal, onOpenSaveModal }) => {
-  const { fodmapLoads } = useMemo(() => {
-    const loads: Partial<Record<FodmapType, number>> = {};
-
-    meal.forEach(item => {
-      const { food, currentAmount } = item;
-      if (food.fodmaps.length > 0 && food.safeAmount > 0 && currentAmount > 0) {
-        const itemLoad = currentAmount / food.safeAmount;
-        food.fodmaps.forEach(fodmapInfo => {
-          const { type } = fodmapInfo;
-          loads[type] = (loads[type] || 0) + itemLoad;
-        });
-      }
-    });
-    
-    return { fodmapLoads: loads };
-  }, [meal]);
-
-
-  const totalCalories = useMemo(() => calculateMealCalories(meal), [meal]);
-
+const MealSummary: React.FC<MealSummaryProps> = ({ meal, onClearMeal, onOpenSaveModal, fodmapLoads, totalCalories }) => {
   const isMealEmpty = meal.length === 0;
   
   const fodmapEntries = Object.entries(fodmapLoads).filter(([, load]) => load > 0);
@@ -96,7 +61,7 @@ const MealSummary: React.FC<MealSummaryProps> = ({ meal, onClearMeal, onOpenSave
         <div className="mt-6 pt-4 border-t border-gray-200">
           <div className="flex justify-between items-center">
             <h3 className="text-lg font-semibold text-gray-700">Total de Calorias</h3>
-            <p className="text-2xl font-bold text-emerald-600">{Math.round(totalCalories)} kcal</p>
+            <p className="text-2xl font-bold text-emerald-600">{totalCalories} kcal</p>
           </div>
         </div>
       )}

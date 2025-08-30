@@ -318,3 +318,263 @@ export const MEAL_TEMPLATES: MealTemplate[] = [
     type: 'soup',
   },
 ];
+
+const aiDescription = 'Refeição do plano anti-inflamatório. Pode conter FODMAPs. Ajuste conforme tolerância.';
+
+export const ANTI_INFLAMMATORY_PLAN: MealTemplate[] = [
+  // DIA 1
+  {
+    id: 'ai-dia1-pequeno-almoco', name: 'Sopa de cevada com lentilhas e vegetais', description: aiDescription, category: 'Plano AI - Dia 1', type: 'soup',
+    items: [{ foodId: 'cevada-cozida', amount: 60 }, { foodId: 'lentilhas-vermelhas-cozidas', amount: 100 }, { foodId: 'cenoura', amount: 75 }, { foodId: 'aipo', amount: 75 }, { foodId: 'cebola', amount: 75 }]
+  },
+  {
+    id: 'ai-dia1-almoco', name: 'Palitos de pescado caseiros (sem fritar)', description: aiDescription, category: 'Plano AI - Dia 1',
+    items: [{ foodId: 'proteina-carne-peixe', amount: 200 }, { foodId: 'farinha-de-milho', amount: 30 }, { foodId: 'pao-ralado', amount: 15 }]
+  },
+  {
+    id: 'ai-dia1-jantar', name: 'Madalenas salgadas com espinafres e queijo vegetal', description: aiDescription, category: 'Plano AI - Dia 1',
+    items: [{ foodId: 'farinha-trigo-comum', amount: 100 }, { foodId: 'espinafre', amount: 50 }, { foodId: 'queijo-vegan-coco', amount: 40 }, { foodId: 'ovo', amount: 2 }]
+  },
+  {
+    id: 'ai-dia1-lanche', name: 'Batido doce com plátano, cacau e leite de aveia', description: aiDescription, category: 'Plano AI - Dia 1',
+    items: [{ foodId: 'banana-nao-madura', amount: 95 }, { foodId: 'cacau-po', amount: 5 }, { foodId: 'bebida-aveia', amount: 200 }]
+  },
+  // DIA 2
+  {
+    id: 'ai-dia2-pequeno-almoco', name: 'Massa integral com ragu de lentilhas', description: aiDescription, category: 'Plano AI - Dia 2',
+    items: [{ foodId: 'massa-integral-cozida', amount: 80 }, { foodId: 'lentilhas-vermelhas-cozidas', amount: 100 }, { foodId: 'cenoura', amount: 40 }, { foodId: 'polpa-de-tomate', amount: 200 }]
+  },
+  {
+    id: 'ai-dia2-almoco', name: 'Tortilha com ervas e batatas-doces', description: aiDescription, category: 'Plano AI - Dia 2',
+    items: [{ foodId: 'ovo', amount: 2 }, { foodId: 'salsa-fresca', amount: 100 }, { foodId: 'batata-doce-laranja', amount: 100 }]
+  },
+  {
+    id: 'ai-dia2-jantar', name: 'Tortitas proteicas com plátano e aveia', description: aiDescription, category: 'Plano AI - Dia 2',
+    items: [{ foodId: 'banana-nao-madura', amount: 95 }, { foodId: 'flocos-aveia', amount: 30 }, { foodId: 'ovo', amount: 1 }]
+  },
+  {
+    id: 'ai-dia2-lanche', name: 'Sopa cremosa de cenoura e batata', description: aiDescription, category: 'Plano AI - Dia 2', type: 'soup',
+    items: [{ foodId: 'cenoura', amount: 200 }, { foodId: 'batata-branca-com-pele', amount: 150 }]
+  },
+  // DIA 3
+  {
+    id: 'ai-dia3-pequeno-almoco', name: 'Mini pizzas com base de batata-doce', description: aiDescription, category: 'Plano AI - Dia 3',
+    items: [{ foodId: 'batata-doce-laranja', amount: 200 }, { foodId: 'farinha-trigo-comum', amount: 40 }, { foodId: 'pure-de-tomate', amount: 60 }]
+  },
+  {
+    id: 'ai-dia3-almoco', name: 'Batido de proteínas vegetais e cacau', description: aiDescription, category: 'Plano AI - Dia 3',
+    items: [{ foodId: 'banana-nao-madura', amount: 95 }, { foodId: 'bebida-amendoas', amount: 200 }, { foodId: 'proteina-vegetal-po', amount: 25 }, { foodId: 'cacau-po', amount: 5 }]
+  },
+  {
+    id: 'ai-dia3-jantar', name: 'Massa de leguminosas com brócolos e azeite de linhaça', description: aiDescription, category: 'Plano AI - Dia 3',
+    items: [{ foodId: 'massa-grao-de-bico', amount: 80 }, { foodId: 'brocolos-flor', amount: 150 }, { foodId: 'azeite-linhaca', amount: 10 }]
+  },
+  {
+    id: 'ai-dia3-lanche', name: 'Croquetes de vegetais ao forno', description: aiDescription, category: 'Plano AI - Dia 3',
+    items: [{ foodId: 'cenoura', amount: 200 }, { foodId: 'farinha-grao-de-bico', amount: 15 }, { foodId: 'pao-ralado', amount: 15 }]
+  },
+  // DIA 4
+  {
+    id: 'ai-dia4-pequeno-almoco', name: 'Barras caseiras com sementes, aveia e frutos secos', description: aiDescription, category: 'Plano AI - Dia 4',
+    items: [{ foodId: 'flocos-aveia', amount: 80 }, { foodId: 'nozes', amount: 40 }, { foodId: 'sementes-chia', amount: 20 }]
+  },
+  {
+    id: 'ai-dia4-almoco', name: 'Palitos de pescado caseiros (sem fritar)', description: aiDescription, category: 'Plano AI - Dia 4',
+    items: [{ foodId: 'proteina-carne-peixe', amount: 200 }, { foodId: 'farinha-de-milho', amount: 30 }, { foodId: 'pao-ralado', amount: 15 }]
+  },
+  {
+    id: 'ai-dia4-jantar', name: 'Massa integral com ragu de lentilhas', description: aiDescription, category: 'Plano AI - Dia 4',
+    items: [{ foodId: 'massa-integral-cozida', amount: 80 }, { foodId: 'lentilhas-vermelhas-cozidas', amount: 100 }, { foodId: 'cenoura', amount: 40 }, { foodId: 'polpa-de-tomate', amount: 200 }]
+  },
+  {
+    id: 'ai-dia4-lanche', name: 'Crepes integrais com creme de maçã', description: aiDescription, category: 'Plano AI - Dia 4',
+    items: [{ foodId: 'farinha-trigo-comum', amount: 80 }, { foodId: 'bebida-amendoas', amount: 150 }, { foodId: 'maca', amount: 200 }, { foodId: 'canela', amount: 2 }]
+  },
+  // DIA 5
+  {
+    id: 'ai-dia5-pequeno-almoco', name: 'Almôndegas de ricota e espinafres (light)', description: aiDescription, category: 'Plano AI - Dia 5',
+    items: [{ foodId: 'queijo-ricotta', amount: 150 }, { foodId: 'espinafre', amount: 100 }, { foodId: 'farinha-trigo-comum', amount: 30 }]
+  },
+  {
+    id: 'ai-dia5-almoco', name: 'Madalenas salgadas com espinafres e queijo vegetal', description: aiDescription, category: 'Plano AI - Dia 5',
+    items: [{ foodId: 'farinha-trigo-comum', amount: 100 }, { foodId: 'espinafre', amount: 50 }, { foodId: 'queijo-vegan-coco', amount: 40 }, { foodId: 'ovo', amount: 2 }]
+  },
+  {
+    id: 'ai-dia5-jantar', name: 'Palitos de pescado caseiros (sem fritar)', description: aiDescription, category: 'Plano AI - Dia 5',
+    items: [{ foodId: 'proteina-carne-peixe', amount: 200 }, { foodId: 'farinha-de-milho', amount: 30 }, { foodId: 'pao-ralado', amount: 15 }]
+  },
+  {
+    id: 'ai-dia5-lanche', name: 'Batido doce com plátano, cacau e leite de aveia', description: aiDescription, category: 'Plano AI - Dia 5',
+    items: [{ foodId: 'banana-nao-madura', amount: 95 }, { foodId: 'cacau-po', amount: 5 }, { foodId: 'bebida-aveia', amount: 200 }]
+  },
+  // DIA 6
+  {
+    id: 'ai-dia6-pequeno-almoco', name: 'Barras caseiras com sementes, aveia e frutos secos', description: aiDescription, category: 'Plano AI - Dia 6',
+    items: [{ foodId: 'flocos-aveia', amount: 80 }, { foodId: 'nozes', amount: 40 }, { foodId: 'sementes-chia', amount: 20 }]
+  },
+  {
+    id: 'ai-dia6-almoco', name: 'Almôndegas de ricota e espinafres (light)', description: aiDescription, category: 'Plano AI - Dia 6',
+    items: [{ foodId: 'queijo-ricotta', amount: 150 }, { foodId: 'espinafre', amount: 100 }, { foodId: 'farinha-trigo-comum', amount: 30 }]
+  },
+  {
+    id: 'ai-dia6-jantar', name: 'Madalenas salgadas com espinafres e queijo vegetal', description: aiDescription, category: 'Plano AI - Dia 6',
+    items: [{ foodId: 'farinha-trigo-comum', amount: 100 }, { foodId: 'espinafre', amount: 50 }, { foodId: 'queijo-vegan-coco', amount: 40 }, { foodId: 'ovo', amount: 2 }]
+  },
+  {
+    id: 'ai-dia6-lanche', name: 'Batido proteico com proteínas vegetais e cacau', description: aiDescription, category: 'Plano AI - Dia 6',
+    items: [{ foodId: 'banana-nao-madura', amount: 95 }, { foodId: 'leite-sem-lactose', amount: 200 }, { foodId: 'proteina-vegetal-po', amount: 25 }, { foodId: 'cacau-po', amount: 5 }]
+  },
+  // DIA 7
+  {
+    id: 'ai-dia7-pequeno-almoco', name: 'Batido doce com plátano, cacau e leite de aveia', description: aiDescription, category: 'Plano AI - Dia 7',
+    items: [{ foodId: 'banana-nao-madura', amount: 95 }, { foodId: 'cacau-po', amount: 5 }, { foodId: 'bebida-aveia', amount: 200 }]
+  },
+  {
+    id: 'ai-dia7-almoco', name: 'Tortitas proteicas com plátano e aveia', description: aiDescription, category: 'Plano AI - Dia 7',
+    items: [{ foodId: 'banana-nao-madura', amount: 95 }, { foodId: 'flocos-aveia', amount: 30 }, { foodId: 'ovo', amount: 1 }]
+  },
+  {
+    id: 'ai-dia7-jantar', name: 'Bowl pós-treino com arroz, frango e abacate', description: aiDescription, category: 'Plano AI - Dia 7',
+    items: [{ foodId: 'arroz-branco', amount: 60 }, { foodId: 'proteina-carne-peixe', amount: 120 }, { foodId: 'abacate', amount: 100 }]
+  },
+  {
+    id: 'ai-dia7-lanche', name: 'Almôndegas de peru ao forno com abóbora', description: aiDescription, category: 'Plano AI - Dia 7',
+    items: [{ foodId: 'proteina-carne-peixe', amount: 250 }, { foodId: 'abobora-manteiga', amount: 150 }, { foodId: 'pao-ralado', amount: 15 }]
+  },
+  // DIA 8
+  {
+    id: 'ai-dia8-pequeno-almoco', name: 'Torrada integral com abacate e ovo cozido', description: aiDescription, category: 'Plano AI - Dia 8',
+    items: [{ foodId: 'pao-integral', amount: 40 }, { foodId: 'abacate', amount: 100 }, { foodId: 'ovo', amount: 1 }]
+  },
+  {
+    id: 'ai-dia8-almoco', name: 'Sopa de cevada com lentilhas e vegetais', description: aiDescription, category: 'Plano AI - Dia 8', type: 'soup',
+    items: [{ foodId: 'cevada-cozida', amount: 60 }, { foodId: 'lentilhas-vermelhas-cozidas', amount: 100 }, { foodId: 'cenoura', amount: 75 }, { foodId: 'aipo', amount: 75 }, { foodId: 'cebola', amount: 75 }]
+  },
+  {
+    id: 'ai-dia8-jantar', name: 'Palitos de pescado caseiros (sem fritar)', description: aiDescription, category: 'Plano AI - Dia 8',
+    items: [{ foodId: 'proteina-carne-peixe', amount: 200 }, { foodId: 'farinha-de-milho', amount: 30 }, { foodId: 'pao-ralado', amount: 15 }]
+  },
+  {
+    id: 'ai-dia8-lanche', name: 'Barras caseiras com sementes, aveia e frutos secos', description: aiDescription, category: 'Plano AI - Dia 8',
+    items: [{ foodId: 'flocos-aveia', amount: 80 }, { foodId: 'nozes', amount: 40 }, { foodId: 'sementes-chia', amount: 20 }]
+  },
+  // DIA 9
+  {
+    id: 'ai-dia9-pequeno-almoco', name: 'Tortitas proteicas com plátano e aveia', description: aiDescription, category: 'Plano AI - Dia 9',
+    items: [{ foodId: 'banana-nao-madura', amount: 95 }, { foodId: 'flocos-aveia', amount: 30 }, { foodId: 'ovo', amount: 1 }]
+  },
+  {
+    id: 'ai-dia9-almoco', name: 'Massa de leguminosas com brócolos e azeite de linhaça', description: aiDescription, category: 'Plano AI - Dia 9',
+    items: [{ foodId: 'massa-grao-de-bico', amount: 80 }, { foodId: 'brocolos-flor', amount: 150 }, { foodId: 'azeite-linhaca', amount: 10 }]
+  },
+  {
+    id: 'ai-dia9-jantar', name: 'Nhoque de ricota e espinafres (light)', description: aiDescription, category: 'Plano AI - Dia 9',
+    items: [{ foodId: 'queijo-ricotta', amount: 150 }, { foodId: 'espinafre', amount: 100 }, { foodId: 'farinha-trigo-comum', amount: 30 }]
+  },
+  {
+    id: 'ai-dia9-lanche', name: 'Batido de proteínas vegetais e cacau', description: aiDescription, category: 'Plano AI - Dia 9',
+    items: [{ foodId: 'banana-nao-madura', amount: 95 }, { foodId: 'leite-sem-lactose', amount: 200 }, { foodId: 'proteina-vegetal-po', amount: 25 }, { foodId: 'cacau-po', amount: 5 }]
+  },
+  // DIA 10
+  {
+    id: 'ai-dia10-pequeno-almoco', name: 'Madalenas salgadas com espinafres e queijo vegetal', description: aiDescription, category: 'Plano AI - Dia 10',
+    items: [{ foodId: 'farinha-trigo-comum', amount: 100 }, { foodId: 'espinafre', amount: 50 }, { foodId: 'queijo-vegan-coco', amount: 40 }, { foodId: 'ovo', amount: 2 }]
+  },
+  {
+    id: 'ai-dia10-almoco', name: 'Palitos de pescado caseiros (sem fritar)', description: aiDescription, category: 'Plano AI - Dia 10',
+    items: [{ foodId: 'proteina-carne-peixe', amount: 200 }, { foodId: 'farinha-de-milho', amount: 30 }, { foodId: 'pao-ralado', amount: 15 }]
+  },
+  {
+    id: 'ai-dia10-jantar', name: 'Croquetes de vegetais ao forno', description: aiDescription, category: 'Plano AI - Dia 10',
+    items: [{ foodId: 'cenoura', amount: 200 }, { foodId: 'farinha-grao-de-bico', amount: 15 }, { foodId: 'pao-ralado', amount: 15 }]
+  },
+  {
+    id: 'ai-dia10-lanche', name: 'Batido doce com plátano, cacau e leite de aveia', description: aiDescription, category: 'Plano AI - Dia 10',
+    items: [{ foodId: 'banana-nao-madura', amount: 95 }, { foodId: 'cacau-po', amount: 5 }, { foodId: 'bebida-aveia', amount: 200 }]
+  },
+  // DIA 11
+  {
+    id: 'ai-dia11-pequeno-almoco', name: 'Almôndegas de ricota e espinafres (light)', description: aiDescription, category: 'Plano AI - Dia 11',
+    items: [{ foodId: 'queijo-ricotta', amount: 150 }, { foodId: 'espinafre', amount: 100 }, { foodId: 'farinha-trigo-comum', amount: 30 }]
+  },
+  {
+    id: 'ai-dia11-almoco', name: 'Bowl pós-treino com arroz, frango e abacate', description: aiDescription, category: 'Plano AI - Dia 11',
+    items: [{ foodId: 'arroz-branco', amount: 60 }, { foodId: 'proteina-carne-peixe', amount: 120 }, { foodId: 'abacate', amount: 100 }]
+  },
+  {
+    id: 'ai-dia11-jantar', name: 'Tortilha com ervas e batatas-doces', description: aiDescription, category: 'Plano AI - Dia 11',
+    items: [{ foodId: 'ovo', amount: 2 }, { foodId: 'salsa-fresca', amount: 100 }, { foodId: 'batata-doce-laranja', amount: 100 }]
+  },
+  {
+    id: 'ai-dia11-lanche', name: 'Barras caseiras com sementes, aveia e frutos secos', description: aiDescription, category: 'Plano AI - Dia 11',
+    items: [{ foodId: 'flocos-aveia', amount: 80 }, { foodId: 'nozes', amount: 40 }, { foodId: 'sementes-chia', amount: 20 }]
+  },
+  // DIA 12
+  {
+    id: 'ai-dia12-pequeno-almoco', name: 'Batido de proteínas vegetais e cacau', description: aiDescription, category: 'Plano AI - Dia 12',
+    items: [{ foodId: 'banana-nao-madura', amount: 95 }, { foodId: 'leite-sem-lactose', amount: 200 }, { foodId: 'proteina-vegetal-po', amount: 25 }, { foodId: 'cacau-po', amount: 5 }]
+  },
+  {
+    id: 'ai-dia12-almoco', name: 'Massa integral com ragu de lentilhas', description: aiDescription, category: 'Plano AI - Dia 12',
+    items: [{ foodId: 'massa-integral-cozida', amount: 80 }, { foodId: 'lentilhas-vermelhas-cozidas', amount: 100 }, { foodId: 'cenoura', amount: 40 }, { foodId: 'polpa-de-tomate', amount: 200 }]
+  },
+  {
+    id: 'ai-dia12-jantar', name: 'Almôndegas de peru ao forno com abóbora', description: aiDescription, category: 'Plano AI - Dia 12',
+    items: [{ foodId: 'proteina-carne-peixe', amount: 250 }, { foodId: 'abobora-manteiga', amount: 150 }, { foodId: 'pao-ralado', amount: 15 }]
+  },
+  {
+    id: 'ai-dia12-lanche', name: 'Torrada integral com abacate e ovo cozido', description: aiDescription, category: 'Plano AI - Dia 12',
+    items: [{ foodId: 'pao-integral', amount: 40 }, { foodId: 'abacate', amount: 100 }, { foodId: 'ovo', amount: 1 }]
+  },
+  // DIA 13
+  {
+    id: 'ai-dia13-pequeno-almoco', name: 'Crepes integrais com creme de maçã', description: aiDescription, category: 'Plano AI - Dia 13',
+    items: [{ foodId: 'farinha-trigo-comum', amount: 80 }, { foodId: 'bebida-amendoas', amount: 150 }, { foodId: 'maca', amount: 200 }, { foodId: 'canela', amount: 2 }]
+  },
+  {
+    id: 'ai-dia13-almoco', name: 'Sopa cremosa de cenoura e batata', description: aiDescription, category: 'Plano AI - Dia 13', type: 'soup',
+    items: [{ foodId: 'cenoura', amount: 200 }, { foodId: 'batata-branca-com-pele', amount: 150 }]
+  },
+  {
+    id: 'ai-dia13-jantar', name: 'Tortitas proteicas com plátano e aveia', description: aiDescription, category: 'Plano AI - Dia 13',
+    items: [{ foodId: 'banana-nao-madura', amount: 95 }, { foodId: 'flocos-aveia', amount: 30 }, { foodId: 'ovo', amount: 1 }]
+  },
+  {
+    id: 'ai-dia13-lanche', name: 'Madalenas salgadas com espinafres e queijo vegetal', description: aiDescription, category: 'Plano AI - Dia 13',
+    items: [{ foodId: 'farinha-trigo-comum', amount: 100 }, { foodId: 'espinafre', amount: 50 }, { foodId: 'queijo-vegan-coco', amount: 40 }, { foodId: 'ovo', amount: 2 }]
+  },
+  // DIA 14
+  {
+    id: 'ai-dia14-pequeno-almoco', name: 'Torrada integral com abacate e ovo cozido', description: aiDescription, category: 'Plano AI - Dia 14',
+    items: [{ foodId: 'pao-integral', amount: 40 }, { foodId: 'abacate', amount: 100 }, { foodId: 'ovo', amount: 1 }]
+  },
+  {
+    id: 'ai-dia14-almoco', name: 'Massa de leguminosas com brócolos e azeite de linhaça', description: aiDescription, category: 'Plano AI - Dia 14',
+    items: [{ foodId: 'massa-grao-de-bico', amount: 80 }, { foodId: 'brocolos-flor', amount: 150 }, { foodId: 'azeite-linhaca', amount: 10 }]
+  },
+  {
+    id: 'ai-dia14-jantar', name: 'Barras caseiras com sementes, aveia e frutos secos', description: aiDescription, category: 'Plano AI - Dia 14',
+    items: [{ foodId: 'flocos-aveia', amount: 80 }, { foodId: 'nozes', amount: 40 }, { foodId: 'sementes-chia', amount: 20 }]
+  },
+  {
+    id: 'ai-dia14-lanche', name: 'Batido doce com plátano, cacau e leite de aveia', description: aiDescription, category: 'Plano AI - Dia 14',
+    items: [{ foodId: 'banana-nao-madura', amount: 95 }, { foodId: 'cacau-po', amount: 5 }, { foodId: 'bebida-aveia', amount: 200 }]
+  },
+  // DIA 15
+  {
+    id: 'ai-dia15-pequeno-almoco', name: 'Batido de proteínas vegetais e cacau', description: aiDescription, category: 'Plano AI - Dia 15',
+    items: [{ foodId: 'banana-nao-madura', amount: 95 }, { foodId: 'leite-sem-lactose', amount: 200 }, { foodId: 'proteina-vegetal-po', amount: 25 }, { foodId: 'cacau-po', amount: 5 }]
+  },
+  {
+    id: 'ai-dia15-almoco', name: 'Tortilha com ervas e batatas-doces', description: aiDescription, category: 'Plano AI - Dia 15',
+    items: [{ foodId: 'ovo', amount: 2 }, { foodId: 'salsa-fresca', amount: 100 }, { foodId: 'batata-doce-laranja', amount: 100 }]
+  },
+  {
+    id: 'ai-dia15-jantar', name: 'Croquetes de vegetais ao forno', description: aiDescription, category: 'Plano AI - Dia 15',
+    items: [{ foodId: 'cenoura', amount: 200 }, { foodId: 'farinha-grao-de-bico', amount: 15 }, { foodId: 'pao-ralado', amount: 15 }]
+  },
+  {
+    id: 'ai-dia15-lanche', name: 'Nhoque de ricota e espinafres (light)', description: aiDescription, category: 'Plano AI - Dia 15',
+    items: [{ foodId: 'queijo-ricotta', amount: 150 }, { foodId: 'espinafre', amount: 100 }, { foodId: 'farinha-trigo-comum', amount: 30 }]
+  },
+];

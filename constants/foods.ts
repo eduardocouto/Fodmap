@@ -10,13 +10,16 @@ export const ALL_FOODS: FoodItem[] = [
   { id: 'banana-nao-madura', name: 'Banana (não madura)', category: 'Fruta', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 95, unit: 'g', calories: 89 },
   { id: 'banana-madura', name: 'Banana madura', category: 'Fruta', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 37, unit: 'g', calories: 89 },
   { id: 'abacate', name: 'Abacate', category: 'Fruta', fodmaps: [{ type: FodmapType.SORBITOL }], safeAmount: 60, unit: 'g', calories: 160 },
+  { id: 'amora', name: 'Amora', category: 'Fruta', fodmaps: [{ type: FodmapType.SORBITOL }], safeAmount: 5, unit: 'g', calories: 43 },
   { id: 'mirtilos', name: 'Mirtilos', category: 'Fruta', fodmaps: [], safeAmount: 125, unit: 'g', calories: 57, notes: 'Low FODMAP até 500g' },
   { id: 'carambola', name: 'Carambola', category: 'Fruta', fodmaps: [], safeAmount: 94, unit: 'g', calories: 31, notes: '1 média, Low FODMAP até 500g' },
+  { id: 'cereja', name: 'Cereja', category: 'Fruta', fodmaps: [{ type: FodmapType.FRUCTOSE }, { type: FodmapType.SORBITOL }], safeAmount: 20, unit: 'g', calories: 50 },
   { id: 'melao-honey-dew', name: 'Melão (Honey dew)', category: 'Fruta', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 92, unit: 'g', calories: 36 },
   { id: 'kiwi', name: 'Kiwi', category: 'Fruta', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 150, unit: 'g', calories: 61 },
   { id: 'raspas-de-limao', name: 'Raspas de limão', category: 'Tempero', fodmaps: [], safeAmount: 3, unit: 'g', calories: 47 },
   { id: 'sumo-de-limao', name: 'Sumo de limão', category: 'Fruta', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 21, unit: 'g', calories: 29 },
   { id: 'sumo-de-lima', name: 'Sumo de lima', category: 'Fruta', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 250, unit: 'ml', calories: 25 },
+  { id: 'lichia', name: 'Lichia', category: 'Fruta', fodmaps: [{ type: FodmapType.SORBITOL }], safeAmount: 30, unit: 'g', calories: 66 },
   { id: 'tangerina-descascada', name: 'Tangerina descascada', category: 'Fruta', fodmaps: [{ type: FodmapType.FRUCTOSE }], safeAmount: 90, unit: 'g', calories: 53 },
   { id: 'meloa-cantaloupe', name: 'Meloa cantaloupe', category: 'Fruta', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 121, unit: 'g', calories: 34 },
   { id: 'laranja-navel', name: 'Laranja (navel) descascada', category: 'Fruta', fodmaps: [{ type: FodmapType.FRUCTOSE }], safeAmount: 130, unit: 'g', calories: 47 },
@@ -28,16 +31,33 @@ export const ALL_FOODS: FoodItem[] = [
   { id: 'roma', name: 'Romã', category: 'Fruta', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }, { type: FodmapType.MANNITOL }], safeAmount: 42, unit: 'g', calories: 83 },
   { id: 'framboesa', name: 'Framboesa', category: 'Fruta', fodmaps: [{ type: FodmapType.FRUCTOSE }], safeAmount: 58, unit: 'g', calories: 52 },
   { id: 'morangos', name: 'Morangos', category: 'Fruta', fodmaps: [{ type: FodmapType.FRUCTOSE }], safeAmount: 65, unit: 'g', calories: 32 },
-  { id: 'damasco', name: 'Damasco', category: 'Fruta', fodmaps: [{ type: FodmapType.SORBITOL }], safeAmount: 67, unit: 'g', calories: 48 },
-  { id: 'toranja', name: 'Toranja', category: 'Fruta', fodmaps: [{ type: FodmapType.FRUCTOSE }], safeAmount: 90, unit: 'g', calories: 42 },
-  { id: 'pessego-amarelo', name: 'Pêssego amarelo com casca', category: 'Fruta', fodmaps: [{ type: FodmapType.FRUCTOSE }], safeAmount: 103, unit: 'g', calories: 39 },
+  { id: 'damasco', name: 'Damasco', category: 'Fruta', fodmaps: [{ type: FodmapType.SORBITOL }, { type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 67, unit: 'g', calories: 48 },
+  { id: 'toranja', name: 'Toranja', category: 'Fruta', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 80, unit: 'g', calories: 42 },
+  { id: 'pessego', name: 'Pêssego', category: 'Fruta', fodmaps: [{ type: FodmapType.SORBITOL }, { type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 30, unit: 'g', calories: 39 },
+  { id: 'nectarina', name: 'Nectarina', category: 'Fruta', fodmaps: [{ type: FodmapType.SORBITOL }, { type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 30, unit: 'g', calories: 44 },
   { id: 'pitaia', name: 'Pitaia', category: 'Fruta', fodmaps: [], safeAmount: 330, unit: 'g', calories: 60, notes: '1 média' },
+  { id: 'manga', name: 'Manga', category: 'Fruta', fodmaps: [{ type: FodmapType.FRUCTOSE }], safeAmount: 40, unit: 'g', calories: 60 },
+  { id: 'pera', name: 'Pêra', category: 'Fruta', fodmaps: [{ type: FodmapType.FRUCTOSE }, { type: FodmapType.SORBITOL }, { type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 25, unit: 'g', calories: 57 },
+  { id: 'goiaba', name: 'Goiaba', category: 'Fruta', fodmaps: [{ type: FodmapType.FRUCTOSE }], safeAmount: 30, unit: 'g', calories: 68 },
+  { id: 'melancia', name: 'Melancia', category: 'Fruta', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }, { type: FodmapType.FRUCTOSE }, { type: FodmapType.MANNITOL }], safeAmount: 15, unit: 'g', calories: 30 },
+  { id: 'figo-fresco', name: 'Figo (fresco)', category: 'Fruta', fodmaps: [{ type: FodmapType.FRUCTOSE }], safeAmount: 30, unit: 'g', calories: 74 },
+  
+  // Categoria: Fruta processada
   { id: 'banana-desidratada', name: 'Banana desidratada', category: 'Fruta processada', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 30, unit: 'g', calories: 287, notes: '15 chips' },
   { id: 'coco-ralado', name: 'Coco ralado', category: 'Fruta processada', fodmaps: [{ type: FodmapType.SORBITOL }], safeAmount: 30, unit: 'g', calories: 354 },
   { id: 'uvas-passas', name: 'Uvas passas', category: 'Fruta processada', fodmaps: [{ type: FodmapType.FRUCTOSE }], safeAmount: 4, unit: 'g', calories: 299 },
   { id: 'sultanas', name: 'Sultanas', category: 'Fruta processada', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }, { type: FodmapType.FRUCTOSE }], safeAmount: 7, unit: 'g', calories: 302 },
-  
+  { id: 'maca-desidratada', name: 'Maçã desidratada', category: 'Fruta processada', fodmaps: [{ type: FodmapType.FRUCTOSE }, { type: FodmapType.SORBITOL }], safeAmount: 10, unit: 'g', calories: 280 },
+  { id: 'cranberry-desidratada', name: 'Cranberry desidratada', category: 'Fruta processada', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 15, unit: 'g', calories: 308 },
+  { id: 'tamara', name: 'Tâmara', category: 'Fruta processada', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 5, unit: 'g', calories: 282 },
+  { id: 'figo-seco', name: 'Figo seco', category: 'Fruta processada', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 3, unit: 'g', calories: 249 },
+  { id: 'goji-berry-desidratada', name: 'Goji berry desidratada', category: 'Fruta processada', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 5, unit: 'g', calories: 349 },
+  { id: 'manga-desidratada', name: 'Manga desidratada', category: 'Fruta processada', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 5, unit: 'g', calories: 320 },
+  { id: 'fruta-enlatada-xarope', name: 'Fruta enlatada em xarope', category: 'Fruta processada', fodmaps: [{ type: FodmapType.FRUCTOSE }], safeAmount: 20, unit: 'g', calories: 85, notes: 'Alto teor de frutose do xarope.' },
+
   // Categoria: Vegetais
+  { id: 'alho', name: 'Alho', category: 'Legumes', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 1, unit: 'g', calories: 149, notes: '1 dente pequeno' },
+  { id: 'alcachofra-globo', name: 'Alcachofra (globo)', category: 'Legumes', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 20, unit: 'g', calories: 47 },
   { id: 'agriao', name: 'Agrião', category: 'Legumes', fodmaps: [], safeAmount: 80, unit: 'g', calories: 11 },
   { id: 'rucula', name: 'Rúcula', category: 'Legumes', fodmaps: [], safeAmount: 75, unit: 'g', calories: 25, notes: 'Low FODMAP até 500g' },
   { id: 'beringela', name: 'Beringela (com casca)', category: 'Legumes', fodmaps: [{ type: FodmapType.SORBITOL }], safeAmount: 75, unit: 'g', calories: 25 },
@@ -80,7 +100,7 @@ export const ALL_FOODS: FoodItem[] = [
   { id: 'abobora-squash-acorn', name: 'Abóbora "squash acorn"', category: 'Legumes', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 54, unit: 'g', calories: 40 },
   { id: 'abobora-squash-delicata', name: 'Abóbora "squash delicata"', category: 'Legumes', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }, { type: FodmapType.GOS }], safeAmount: 49, unit: 'g', calories: 34 },
   { id: 'rabanete', name: 'Rabanete', category: 'Legumes', fodmaps: [], safeAmount: 75, unit: 'g', calories: 16, notes: 'Pode fazer mais quantidade' },
-  { id: 'espargos', name: 'Espargos', category: 'Legumes', fodmaps: [{ type: FodmapType.FRUCTOSE }], safeAmount: 42, unit: 'g', calories: 20 },
+  { id: 'espargos', name: 'Espargos', category: 'Legumes', fodmaps: [{ type: FodmapType.FRUCTOSE }, { type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 12, unit: 'g', calories: 20, notes: '1 lança' },
   { id: 'acelga', name: 'Acelga', category: 'Legumes', fodmaps: [], safeAmount: 75, unit: 'g', calories: 19, notes: 'Pode fazer mais quantidade' },
   { id: 'espinafre', name: 'Espinafre', category: 'Legumes', fodmaps: [], safeAmount: 75, unit: 'g', calories: 23, notes: 'Pode fazer mais quantidade' },
   { id: 'espinafre-baby', name: 'Espinafre baby', category: 'Legumes', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 75, unit: 'g', calories: 23 },
@@ -97,11 +117,18 @@ export const ALL_FOODS: FoodItem[] = [
   { id: 'beterraba-em-pickles', name: 'Beterraba em pickles', category: 'Legumes', fodmaps: [], safeAmount: 75, unit: 'g', calories: 43, notes: 'Low FODMAP até 500g' },
   { id: 'cogumelos-pleurotus', name: 'Cogumelos pleurotus', category: 'Legumes', fodmaps: [], safeAmount: 75, unit: 'g', calories: 33 },
   { id: 'cogumelos-enlatados', name: 'Cogumelos enlatados', category: 'Legumes', fodmaps: [{ type: FodmapType.MANNITOL }], safeAmount: 75, unit: 'g', calories: 22 },
+  { id: 'cogumelos-comuns', name: 'Cogumelos comuns', category: 'Legumes', fodmaps: [{ type: FodmapType.MANNITOL }], safeAmount: 10, unit: 'g', calories: 22 },
+  { id: 'ervilha-torta', name: 'Ervilha-torta (Sugar Snap)', category: 'Legumes', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }, { type: FodmapType.FRUCTOSE }], safeAmount: 15, unit: 'g', calories: 42 },
+  { id: 'quiabo', name: 'Quiabo', category: 'Legumes', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }, { type: FodmapType.GOS }], safeAmount: 30, unit: 'g', calories: 33 },
   { id: 'batata-doce-laranja', name: 'Batata doce-laranja', category: 'Legumes', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 75, unit: 'g', calories: 86 },
   { id: 'batata-doce-roxa', name: 'Batata-doce roxa', category: 'Legumes', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 75, unit: 'g', calories: 86 },
   { id: 'batata-doce-branca', name: 'Batata-doce branca', category: 'Legumes', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 75, unit: 'g', calories: 86 },
   { id: 'batata-branca-com-pele', name: 'Batata branca com pele', category: 'Legumes', fodmaps: [], safeAmount: 75, unit: 'g', calories: 77, notes: 'Dose segura até 500g' },
   { id: 'batata-vermelha-com-pele', name: 'Batata vermelha com pele', category: 'Legumes', fodmaps: [], safeAmount: 75, unit: 'g', calories: 70, notes: 'Dose segura até 500g' },
+  { id: 'funcho', name: 'Funcho', category: 'Legumes', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 48, unit: 'g', calories: 31 },
+  { id: 'chalota', name: 'Chalota', category: 'Legumes', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 10, unit: 'g', calories: 72 },
+  { id: 'alho-frances-completo', name: 'Alho-francês (completo)', category: 'Legumes', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 14, unit: 'g', calories: 61, notes: 'A parte branca é rica em frutanos.' },
+  { id: 'alcachofra-jerusalem', name: 'Alcachofra-de-jerusalém', category: 'Legumes', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 15, unit: 'g', calories: 73 },
   
   // Categoria: Outros
   { id: 'azeitonas', name: 'Azeitonas pretas ou verdes sem caroço', category: 'Outros', fodmaps: [], safeAmount: 60, unit: 'g', calories: 115, notes: 'Apenas vestígios, pode fazer mais quantidade' },
@@ -122,6 +149,7 @@ export const ALL_FOODS: FoodItem[] = [
   { id: 'flocos-aveia', name: 'Flocos de aveia', category: 'Cereais', fodmaps: [], safeAmount: 52, unit: 'g', calories: 370 },
   { id: 'flocos-aveia-instantanea', name: 'Flocos de aveia instantânea', category: 'Cereais', fodmaps: [{ type: FodmapType.GOS }, { type: FodmapType.FRUCTANS, group: FructanGroup.CEREAL }], safeAmount: 23, unit: 'g', calories: 370 },
   { id: 'arroz-tufado', name: 'Arroz tufado', category: 'Cereais', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.CEREAL }], safeAmount: 15, unit: 'g', calories: 402 },
+  { id: 'couscous-trigo', name: 'Cuscuz de Trigo', category: 'Cereais', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.CEREAL }], safeAmount: 20, unit: 'g', calories: 112 },
 
   // Categoria: Farinhas
   { id: 'farinha-trigo-sarraceno', name: 'Farinha de trigo-sarraceno', category: 'Farinhas', fodmaps: [], safeAmount: 100, unit: 'g', calories: 343 },
@@ -140,6 +168,9 @@ export const ALL_FOODS: FoodItem[] = [
   { id: 'fecula-tapioca', name: 'Fécula de tapioca (polvilho doce)', category: 'Farinhas', fodmaps: [], safeAmount: 100, unit: 'g', calories: 358 },
   { id: 'farelo-aveia-nao-processado', name: 'Farelo de aveia, não processado', category: 'Cereais', fodmaps: [{ type: FodmapType.GOS }, { type: FodmapType.FRUCTANS, group: FructanGroup.CEREAL }], safeAmount: 22, unit: 'g', calories: 246 },
   { id: 'farelo-arroz-nao-processado', name: 'Farelo de arroz, não processado', category: 'Cereais', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.CEREAL }], safeAmount: 16, unit: 'g', calories: 285 },
+  { id: 'farinha-soja', name: 'Farinha de Soja', category: 'Farinhas', fodmaps: [{ type: FodmapType.GOS }, { type: FodmapType.FRUCTANS, group: FructanGroup.CEREAL }], safeAmount: 30, unit: 'g', calories: 436 },
+  { id: 'farinha-coco', name: 'Farinha de Coco', category: 'Farinhas', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.CEREAL }, { type: FodmapType.SORBITOL }], safeAmount: 15, unit: 'g', calories: 443 },
+  { id: 'farinha-centeio', name: 'Farinha de Centeio', category: 'Farinhas', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.CEREAL }], safeAmount: 15, unit: 'g', calories: 350 },
   
   // Categoria: Massas, Arroz, etc.
   { id: 'noodles-vermicelli', name: 'Noodles, vermicelli', category: 'Cereais', fodmaps: [], safeAmount: 113, unit: 'g', calories: 108, notes: 'Cozinhado' },
@@ -178,6 +209,8 @@ export const ALL_FOODS: FoodItem[] = [
   { id: 'nozes', name: 'Nozes', category: 'Frutos Oleaginosos', fodmaps: [{ type: FodmapType.GOS }], safeAmount: 30, unit: 'g', calories: 654 },
   { id: 'nozes-pecan', name: 'Nozes pecan', category: 'Frutos Oleaginosos', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 30, unit: 'g', calories: 691 },
   { id: 'pinhoes', name: 'Pinhões', category: 'Frutos Oleaginosos', fodmaps: [], safeAmount: 14, unit: 'g', calories: 673 },
+  { id: 'pistacho', name: 'Pistacho', category: 'Frutos Oleaginosos', fodmaps: [{ type: FodmapType.GOS }, { type: FodmapType.FRUCTANS, group: FructanGroup.CEREAL }], safeAmount: 10, unit: 'g', calories: 562 },
+  { id: 'castanha-caju', name: 'Castanha de Caju', category: 'Frutos Oleaginosos', fodmaps: [{ type: FodmapType.GOS }, { type: FodmapType.FRUCTANS, group: FructanGroup.CEREAL }], safeAmount: 10, unit: 'g', calories: 553 },
   
   // Categoria: Sementes
   { id: 'sementes-chia', name: 'Sementes de chia', category: 'Sementes', fodmaps: [], safeAmount: 24, unit: 'g', calories: 486 },
@@ -189,6 +222,7 @@ export const ALL_FOODS: FoodItem[] = [
   { id: 'sementes-papoila', name: 'Sementes de papoila', category: 'Sementes', fodmaps: [], safeAmount: 24, unit: 'g', calories: 525 },
 
   // Categoria: Leguminosas
+  { id: 'feijao-generico', name: 'Feijão (geral)', category: 'Leguminosas', fodmaps: [{ type: FodmapType.GOS }], safeAmount: 20, unit: 'g', calories: 130, notes: 'Varia por tipo. Enlatado é mais baixo em FODMAPs.' },
   { id: 'feijao-manteiga-enlatado', name: 'Feijão-manteiga (enlatado)', category: 'Leguminosas', fodmaps: [{ type: FodmapType.GOS }], safeAmount: 35, unit: 'g', calories: 105 },
   { id: 'feijao-preto-enlatado', name: 'Feijão-preto (enlatado)', category: 'Leguminosas', fodmaps: [{ type: FodmapType.GOS }, { type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 40, unit: 'g', calories: 132 },
   { id: 'grao-de-bico-enlatado', name: 'Grão-de-bico (enlatado)', category: 'Leguminosas', fodmaps: [{ type: FodmapType.GOS }, { type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 80, unit: 'g', calories: 139 },
@@ -202,6 +236,7 @@ export const ALL_FOODS: FoodItem[] = [
   { id: 'ervilhas-congeladas', name: 'Ervilhas congeladas', category: 'Leguminosas', fodmaps: [{ type: FodmapType.GOS }, { type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 54, unit: 'g', calories: 81 },
   { id: 'ervilha-de-quebrar', name: 'Ervilha de quebrar', category: 'Leguminosas', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 75, unit: 'g', calories: 42 },
   { id: 'ervilhas-enlatadas', name: 'Ervilhas enlatadas (escorridas)', category: 'Leguminosas', fodmaps: [{ type: FodmapType.GOS }], safeAmount: 53, unit: 'g', calories: 81 },
+  { id: 'graos-de-soja', name: 'Grãos de Soja', category: 'Leguminosas', fodmaps: [{ type: FodmapType.GOS }], safeAmount: 20, unit: 'g', calories: 446 },
 
   // Categoria: Substitutos vegetarianos
   { id: 'tempeh-plain', name: 'Tempeh (plain)', category: 'Substitutos vegetarianos', fodmaps: [], safeAmount: 100, unit: 'g', calories: 193 },
@@ -215,6 +250,7 @@ export const ALL_FOODS: FoodItem[] = [
   { id: 'alecrim-fresco', name: 'Alecrim, fresco', category: 'Tempero', fodmaps: [], safeAmount: 16, unit: 'g', calories: 131 },
   { id: 'tomilho-fresco', name: 'Tomilho, fresco', category: 'Tempero', fodmaps: [], safeAmount: 16, unit: 'g', calories: 101 },
   { id: 'hortela', name: 'Hortelã', category: 'Tempero', fodmaps: [], safeAmount: 90, unit: 'g', calories: 44 },
+  { id: 'menta', name: 'Menta', category: 'Tempero', fodmaps: [], safeAmount: 90, unit: 'g', calories: 44 },
   { id: 'folha-louro', name: 'Folha de louro', category: 'Tempero', fodmaps: [{ type: FodmapType.FRUCTOSE }], safeAmount: 1, unit: 'g', calories: 313, notes: 'Não fazer mais do que 1 folha' },
   { id: 'oregaos-secos', name: 'Oregãos secos', category: 'Tempero', fodmaps: [], safeAmount: 3, unit: 'g', calories: 265 },
   { id: 'pimenta-preta', name: 'Pimenta preta', category: 'Tempero', fodmaps: [], safeAmount: 2, unit: 'g', calories: 251 },
@@ -228,6 +264,12 @@ export const ALL_FOODS: FoodItem[] = [
   { id: 'asoefetida', name: 'Asoefetida', category: 'Tempero', fodmaps: [], safeAmount: 2, unit: 'g', calories: 296, notes: '1/4 colher de chá' },
   { id: 'anis-estrelado', name: 'Anis-estrelado', category: 'Tempero', fodmaps: [], safeAmount: 2, unit: 'g', calories: 337 },
   { id: 'acafrao', name: 'Açafrão', category: 'Tempero', fodmaps: [], safeAmount: 2, unit: 'g', calories: 310 },
+  { id: 'curcuma-po', name: 'Curcuma em pó', category: 'Tempero', fodmaps: [], safeAmount: 2, unit: 'g', calories: 312 },
+  { id: 'baunilha-natural', name: 'Baunilha Natural', category: 'Tempero', fodmaps: [], safeAmount: 5, unit: 'g', calories: 288 },
+  { id: 'endro', name: 'Endro', category: 'Tempero', fodmaps: [], safeAmount: 10, unit: 'g', calories: 43 },
+  { id: 'alho-po', name: 'Alho em pó', category: 'Tempero', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 1, unit: 'g', calories: 331 },
+  { id: 'cebola-po', name: 'Cebola em pó', category: 'Tempero', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 1, unit: 'g', calories: 341 },
+  { id: 'raiz-de-chicoria', name: 'Raiz de Chicória', category: 'Tempero', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.CEREAL }], safeAmount: 2, unit: 'g', calories: 72, notes: 'Frequentemente usado como aditivo (inulina).' },
   
   // Categoria: Molhos e Condimentos
   { id: 'molho-soja', name: 'Molho de soja', category: 'Molhos', fodmaps: [], safeAmount: 42, unit: 'ml', calories: 53 },
@@ -239,6 +281,10 @@ export const ALL_FOODS: FoodItem[] = [
   { id: 'marmelada', name: 'Marmelada', category: 'Doces', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 13, unit: 'g', calories: 260 },
   { id: 'manteiga-amendoim', name: 'Manteiga de amendoim', category: 'Pastas', fodmaps: [], safeAmount: 50, unit: 'g', calories: 588 },
   { id: 'manteiga-amendoa', name: 'Manteiga de amêndoa', category: 'Pastas', fodmaps: [{ type: FodmapType.GOS }, { type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 20, unit: 'g', calories: 614 },
+  { id: 'molho-queijo', name: 'Molho de Queijo', category: 'Molhos', fodmaps: [{ type: FodmapType.LACTOSE }], safeAmount: 20, unit: 'g', calories: 100, notes: 'Verificar ingredientes para alho/cebola.' },
+  { id: 'chutney', name: 'Chutney', category: 'Molhos', fodmaps: [{ type: FodmapType.FRUCTOSE }, { type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 10, unit: 'g', calories: 150, notes: 'Geralmente contém cebola e frutas ricas em FODMAPs.' },
+  { id: 'ketchup', name: 'Ketchup', category: 'Molhos', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 13, unit: 'g', calories: 101, notes: 'Pode conter xarope de milho rico em frutose.' },
+  { id: 'mostarda-comum', name: 'Mostarda (comum)', category: 'Molhos', fodmaps: [], safeAmount: 10, unit: 'g', calories: 143, notes: 'Geralmente baixa em FODMAPs, mas verificar rótulos para alho/cebola.' },
   
   // Categoria: Doces e Açúcares
   { id: 'chocolate-preto', name: 'Chocolate preto', category: 'Doces', fodmaps: [{ type: FodmapType.LACTOSE }, { type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 30, unit: 'g', calories: 546 },
@@ -251,6 +297,13 @@ export const ALL_FOODS: FoodItem[] = [
   { id: 'acucar-demerara', name: 'Açúcar demerara', category: 'Açúcares', fodmaps: [{ type: FodmapType.FRUCTOSE }], safeAmount: 5, unit: 'g', calories: 375 },
   { id: 'xarope-de-acer', name: 'Xarope de ácer (maple syrup)', category: 'Açúcares', fodmaps: [], safeAmount: 50, unit: 'g', calories: 260 },
   { id: 'xarope-arroz', name: 'Xarope de arroz', category: 'Açúcares', fodmaps: [], safeAmount: 28, unit: 'g', calories: 316 },
+  { id: 'xarope-agave', name: 'Xarope de Agave', category: 'Açúcares', fodmaps: [{ type: FodmapType.FRUCTOSE }], safeAmount: 5, unit: 'g', calories: 310 },
+  { id: 'mel', name: 'Mel', category: 'Açúcares', fodmaps: [{ type: FodmapType.FRUCTOSE }], safeAmount: 7, unit: 'g', calories: 304 },
+  { id: 'xarope-milho-frutose', name: 'Xarope de Milho Rico em Frutose', category: 'Açúcares', fodmaps: [{ type: FodmapType.FRUCTOSE }], safeAmount: 5, unit: 'g', calories: 281 },
+  { id: 'melaco', name: 'Melaço', category: 'Açúcares', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.CEREAL }], safeAmount: 5, unit: 'g', calories: 290 },
+  { id: 'sorbitol-adoçante', name: 'Sorbitol (E420)', category: 'Açúcares', fodmaps: [{ type: FodmapType.SORBITOL }], safeAmount: 2, unit: 'g', calories: 260, notes: 'Poliol' },
+  { id: 'manitol-adoçante', name: 'Manitol (E421)', category: 'Açúcares', fodmaps: [{ type: FodmapType.MANNITOL }], safeAmount: 2, unit: 'g', calories: 160, notes: 'Poliol' },
+  { id: 'xilitol-adoçante', name: 'Xilitol (E967)', category: 'Açúcares', fodmaps: [{ type: FodmapType.SORBITOL }], safeAmount: 2, unit: 'g', calories: 240, notes: 'Poliol (não é Sorbitol, mas classificado como Poliol. Sorbitol aqui para simplificar)' },
 
   // Categoria: Gorduras e Óleos
   { id: 'margarina', name: 'Margarina poli ou monoinsaturada', category: 'Gorduras', fodmaps: [], safeAmount: 19, unit: 'g', calories: 717 },
@@ -264,22 +317,33 @@ export const ALL_FOODS: FoodItem[] = [
   { id: 'oleo-girassol', name: 'Óleo de girassol', category: 'Gorduras', fodmaps: [], safeAmount: 18, unit: 'ml', calories: 884 },
   { id: 'oleo-noz', name: 'Óleo de noz', category: 'Gorduras', fodmaps: [], safeAmount: 18, unit: 'ml', calories: 884 },
   { id: 'oleo-vegetal', name: 'Óleo vegetal', category: 'Gorduras', fodmaps: [], safeAmount: 18, unit: 'ml', calories: 884 },
+  { id: 'oleo-coco', name: 'Óleo de Coco', category: 'Gorduras', fodmaps: [], safeAmount: 18, unit: 'ml', calories: 884 },
   
   // Categoria: Bebidas
   { id: 'cafe', name: 'Café', category: 'Bebidas', fodmaps: [], safeAmount: 30, unit: 'ml', calories: 1 },
   { id: 'cacau-po', name: 'Cacau em pó', category: 'Bebidas', fodmaps: [], safeAmount: 8, unit: 'g', calories: 228 },
+  { id: 'cacau-cru-po', name: 'Cacau Cru em pó', category: 'Bebidas', fodmaps: [], safeAmount: 8, unit: 'g', calories: 228 },
   { id: 'chocolate-po', name: 'Chocolate em pó', category: 'Bebidas', fodmaps: [], safeAmount: 10, unit: 'g', calories: 390 },
   { id: 'po-alfarroba', name: 'Pó de alfarroba', category: 'Bebidas', fodmaps: [], safeAmount: 6, unit: 'g', calories: 222 },
   { id: 'espirulina-po', name: 'Espirulina em pó', category: 'Bebidas', fodmaps: [], safeAmount: 8, unit: 'g', calories: 290 },
   { id: 'erva-trigo-po', name: 'Erva-trigo em pó', category: 'Bebidas', fodmaps: [], safeAmount: 3, unit: 'g', calories: 282 },
   { id: 'kombucha', name: 'Kombucha', category: 'Bebidas', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 180, unit: 'ml', calories: 20 },
   { id: 'sumo-laranja-natural', name: 'Sumo de laranja natural', category: 'Bebidas', fodmaps: [{ type: FodmapType.FRUCTOSE }], safeAmount: 72, unit: 'g', calories: 45 },
+  { id: 'sumo-fruta-concentrado', name: 'Sumo de Fruta (concentrado)', category: 'Bebidas', fodmaps: [{ type: FodmapType.FRUCTOSE }], safeAmount: 50, unit: 'ml', calories: 50, notes: 'Geralmente rico em excesso de frutose.' },
   { id: 'cha-verde', name: 'Chá verde', category: 'Bebidas', fodmaps: [], safeAmount: 250, unit: 'ml', calories: 1 },
   { id: 'infusao-hortela-pimenta', name: 'Infusão de hortelã-pimenta', category: 'Bebidas', fodmaps: [], safeAmount: 250, unit: 'ml', calories: 0 },
   { id: 'infusao-rooibos', name: 'Infusão de rooibos', category: 'Bebidas', fodmaps: [], safeAmount: 250, unit: 'ml', calories: 2 },
   { id: 'cha-branco', name: 'Chá branco', category: 'Bebidas', fodmaps: [], safeAmount: 250, unit: 'ml', calories: 1 },
   { id: 'cha-preto-fraco', name: 'Chá preto (fraco)', category: 'Bebidas', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 250, unit: 'ml', calories: 1 },
   { id: 'cha-preto-forte', name: 'Chá preto (forte)', category: 'Bebidas', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 180, unit: 'ml', calories: 1 },
+  { id: 'cha-matcha-po', name: 'Chá Matcha em pó', category: 'Bebidas', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 2, unit: 'g', calories: 324, notes: '1 colher de chá' },
+  { id: 'refrigerante-frutose', name: 'Refrigerante (com frutose)', category: 'Bebidas', fodmaps: [{ type: FodmapType.FRUCTOSE }], safeAmount: 100, unit: 'ml', calories: 40 },
+  { id: 'rum', name: 'Rum', category: 'Bebidas', fodmaps: [{ type: FodmapType.FRUCTOSE }], safeAmount: 15, unit: 'ml', calories: 231 },
+  { id: 'cha-camomila', name: 'Chá de Camomila', category: 'Bebidas', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 100, unit: 'ml', calories: 1 },
+  { id: 'cha-oolong', name: 'Chá Oolong', category: 'Bebidas', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 100, unit: 'ml', calories: 1 },
+  { id: 'cha-erva-doce', name: 'Chá de Erva-doce', category: 'Bebidas', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 100, unit: 'ml', calories: 2 },
+  { id: 'cha-chai', name: 'Chá Chai (forte)', category: 'Bebidas', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 100, unit: 'ml', calories: 5 },
+  { id: 'vinho-generoso', name: 'Vinho Generoso (ex: Porto)', category: 'Bebidas', fodmaps: [{ type: FodmapType.FRUCTOSE }], safeAmount: 30, unit: 'ml', calories: 80 },
 
   // Categoria: Laticínios e Alternativas
   { id: 'queijo-sem-lactose', name: 'Queijo sem lactose', category: 'Laticínios', fodmaps: [], safeAmount: 40, unit: 'g', calories: 350, notes: 'Apenas vestígios' },
@@ -307,6 +371,31 @@ export const ALL_FOODS: FoodItem[] = [
   { id: 'bebida-quinoa-nao-adocada', name: 'Bebida de quinoa (não adoçada)', category: 'Laticínios', fodmaps: [], safeAmount: 250, unit: 'ml', calories: 57 },
   { id: 'iogurte-sem-lactose', name: 'Iogurte sem lactose', category: 'Laticínios', fodmaps: [], safeAmount: 170, unit: 'g', calories: 61, notes: 'Low FODMAP até 500g' },
   { id: 'iogurte-base-coco', name: 'Iogurte à base de bebida de coco', category: 'Laticínios', fodmaps: [], safeAmount: 125, unit: 'g', calories: 150 },
+  { id: 'leite-vaca', name: 'Leite de Vaca', category: 'Laticínios', fodmaps: [{ type: FodmapType.LACTOSE }], safeAmount: 15, unit: 'ml', calories: 61 },
+  { id: 'leite-cabra', name: 'Leite de Cabra', category: 'Laticínios', fodmaps: [{ type: FodmapType.LACTOSE }], safeAmount: 15, unit: 'ml', calories: 69 },
+  { id: 'leite-ovelha', name: 'Leite de Ovelha', category: 'Laticínios', fodmaps: [{ type: FodmapType.LACTOSE }], safeAmount: 15, unit: 'ml', calories: 108 },
+  { id: 'iogurte-natural-lactose', name: 'Iogurte (com lactose)', category: 'Laticínios', fodmaps: [{ type: FodmapType.LACTOSE }], safeAmount: 20, unit: 'g', calories: 61 },
+  { id: 'leite-condensado', name: 'Leite Condensado', category: 'Laticínios', fodmaps: [{ type: FodmapType.LACTOSE }], safeAmount: 10, unit: 'g', calories: 321 },
+  { id: 'leite-evaporado', name: 'Leite Evaporado', category: 'Laticínios', fodmaps: [{ type: FodmapType.LACTOSE }], safeAmount: 15, unit: 'ml', calories: 134 },
+  { id: 'sorvete-lactose', name: 'Sorvete (com lactose)', category: 'Laticínios', fodmaps: [{ type: FodmapType.LACTOSE }], safeAmount: 30, unit: 'g', calories: 207 },
+  { id: 'leitelho', name: 'Leitelho (Buttermilk)', category: 'Laticínios', fodmaps: [{ type: FodmapType.LACTOSE }], safeAmount: 15, unit: 'ml', calories: 40 },
+  { id: 'queijo-cottage', name: 'Queijo Cottage', category: 'Laticínios', fodmaps: [{ type: FodmapType.LACTOSE }], safeAmount: 20, unit: 'g', calories: 98 },
+  { id: 'queijo-creme', name: 'Queijo Creme', category: 'Laticínios', fodmaps: [{ type: FodmapType.LACTOSE }], safeAmount: 20, unit: 'g', calories: 342 },
+  { id: 'nata-chantilly', name: 'Nata / Chantilly', category: 'Laticínios', fodmaps: [{ type: FodmapType.LACTOSE }], safeAmount: 30, unit: 'g', calories: 340 },
+  { id: 'pudim-lactose', name: 'Pudim (com lactose)', category: 'Laticínios', fodmaps: [{ type: FodmapType.LACTOSE }], safeAmount: 50, unit: 'g', calories: 110 },
+  { id: 'bebida-soja', name: 'Bebida de Soja (grãos inteiros)', category: 'Laticínios', fodmaps: [{ type: FodmapType.GOS }], safeAmount: 30, unit: 'ml', calories: 54 },
+  
+  // Novos Alimentos do Plano Anti-inflamatório
+  { id: 'cevada-cozida', name: 'Cevada (cozida)', category: 'Cereais', fodmaps: [{ type: FodmapType.GOS }, { type: FodmapType.FRUCTANS, group: FructanGroup.CEREAL }], safeAmount: 20, unit: 'g', calories: 123 },
+  { id: 'cebola', name: 'Cebola', category: 'Legumes', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 10, unit: 'g', calories: 40 },
+  { id: 'pao-ralado', name: 'Pão Ralado (trigo)', category: 'Cereais', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.CEREAL }], safeAmount: 15, unit: 'g', calories: 395 },
+  { id: 'farinha-trigo-comum', name: 'Farinha de Trigo', category: 'Farinhas', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.CEREAL }], safeAmount: 15, unit: 'g', calories: 364 },
+  { id: 'massa-integral-cozida', name: 'Massa Integral (cozida)', category: 'Cereais', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.CEREAL }], safeAmount: 74, unit: 'g', calories: 124 },
+  { id: 'proteina-vegetal-po', name: 'Proteína Vegetal em Pó', category: 'Suplementos', fodmaps: [], safeAmount: 30, unit: 'g', calories: 380, notes: 'Verificar rótulo para FODMAPs ocultos' },
+  { id: 'azeite-linhaca', name: 'Azeite de Linhaça', category: 'Gorduras', fodmaps: [], safeAmount: 18, unit: 'ml', calories: 884 },
+  { id: 'farinha-grao-de-bico', name: 'Farinha de Grão-de-bico', category: 'Farinhas', fodmaps: [{ type: FodmapType.GOS }, { type: FodmapType.FRUCTANS, group: FructanGroup.FRUIT_VEG }], safeAmount: 25, unit: 'g', calories: 387 },
+  { id: 'pao-integral', name: 'Pão Integral (trigo)', category: 'Cereais', fodmaps: [{ type: FodmapType.FRUCTANS, group: FructanGroup.CEREAL }], safeAmount: 24, unit: 'g', calories: 250 },
+  { id: 'maca', name: 'Maçã', category: 'Fruta', fodmaps: [{ type: FodmapType.FRUCTOSE }, { type: FodmapType.SORBITOL }], safeAmount: 20, unit: 'g', calories: 52 },
 ];
 
 export const FORBIDDEN_FOODS: ForbiddenFoodItem[] = [
@@ -330,6 +419,7 @@ export const FORBIDDEN_FOODS: ForbiddenFoodItem[] = [
   { id: 'farinha-de-coco', name: 'Farinha de coco', category: 'Farinhas', reason: 'Rico em Sorbitol e Frutanos' },
   { id: 'farinha-de-castanha', name: 'Farinha de castanha', category: 'Farinhas', reason: 'Alto teor de FODMAPs' },
   { id: 'farinha-de-amaranto', name: 'Farinha de amaranto', category: 'Farinhas', reason: 'Rico em Frutanos' },
+  { id: 'farinha-de-soja', name: 'Farinha de Soja', category: 'Farinhas', reason: 'Rico em GOS e Frutanos' },
 
   // Fruta
   { id: 'maca', name: 'Maçã', category: 'Fruta', reason: 'Rico em Frutose e Sorbitol' },
@@ -339,6 +429,8 @@ export const FORBIDDEN_FOODS: ForbiddenFoodItem[] = [
   { id: 'anona', name: 'Anona', category: 'Fruta', reason: 'Rico em Frutose' },
   { id: 'figos-frescos', name: 'Figos frescos', category: 'Fruta', reason: 'Rico em Frutose' },
   { id: 'manga', name: 'Manga', category: 'Fruta', reason: 'Rico em Frutose' },
+  { id: 'goiaba', name: 'Goiaba', category: 'Fruta', reason: 'Rico em Frutose' },
+  { id: 'lichia', name: 'Lichia', category: 'Fruta', reason: 'Rico em Sorbitol' },
   { id: 'nectarina', name: 'Nectarina', category: 'Fruta', reason: 'Rico em Frutanos e Sorbitol' },
   { id: 'pessego', name: 'Pêssego', category: 'Fruta', reason: 'Rico em Frutanos e Sorbitol' },
   { id: 'pera', name: 'Pêra', category: 'Fruta', reason: 'Rico em Frutose e Sorbitol' },
@@ -349,25 +441,53 @@ export const FORBIDDEN_FOODS: ForbiddenFoodItem[] = [
   { id: 'maca-desidratada', name: 'Maçã desidratada', category: 'Frutos Secos', reason: 'Rico em Frutose e Sorbitol' },
   { id: 'damascos-secos', name: 'Damascos/Alperces secos', category: 'Frutos Secos', reason: 'Rico em Frutanos e Frutose' },
   { id: 'figos-secos', name: 'Figos secos', category: 'Frutos Secos', reason: 'Rico em Frutose e Frutanos' },
+  { id: 'tamara', name: 'Tâmara', category: 'Frutos Secos', reason: 'Rico em Frutanos' },
+  { id: 'goji-berry', name: 'Goji Berry', category: 'Frutos Secos', reason: 'Rico em Frutanos' },
+  { id: 'cranberry-desidratada', name: 'Cranberry desidratada', category: 'Frutos Secos', reason: 'Rico em Frutanos' },
   { id: 'caju', name: 'Caju', category: 'Frutos Secos', reason: 'Rico em GOS e Frutanos' },
   { id: 'pistacho', name: 'Pistacho', category: 'Frutos Secos', reason: 'Rico em GOS e Frutanos' },
 
   // Legumes
+  { id: 'alcachofra', name: 'Alcachofra', category: 'Legumes', reason: 'Rico em Frutanos' },
   { id: 'favas', name: 'Favas', category: 'Legumes', reason: 'Rico em GOS e Frutanos' },
   { id: 'alho', name: 'Alho', category: 'Legumes', reason: 'Rico em Frutanos' },
   { id: 'alho-frances-branco', name: 'Alho-francês (parte branca)', category: 'Legumes', reason: 'Rico em Frutanos' },
   { id: 'cebolas', name: 'Cebolas', category: 'Legumes', reason: 'Rico em Frutanos' },
+  { id: 'quiabo', name: 'Quiabo', category: 'Legumes', reason: 'Rico em Frutanos e GOS' },
+  { id: 'feijoes', name: 'Feijões (geral, secos)', category: 'Legumes', reason: 'Rico em GOS' },
+  { id: 'graos-de-soja', name: 'Grãos de Soja', category: 'Legumes', reason: 'Rico em GOS' },
 
   // Laticínios e Soja
   { id: 'leite-de-vaca', name: 'Leite de vaca (todos os tipos)', category: 'Laticínios', reason: 'Rico em Lactose' },
+  { id: 'leite-de-cabra', name: 'Leite de cabra', category: 'Laticínios', reason: 'Rico em Lactose' },
+  { id: 'leite-de-ovelha', name: 'Leite de ovelha', category: 'Laticínios', reason: 'Rico em Lactose' },
   { id: 'leite-de-soja', name: 'Leite de soja (de feijão de soja)', category: 'Laticínios', reason: 'Rico em GOS' },
   { id: 'leite-condensado', name: 'Leite condensado', category: 'Laticínios', reason: 'Rico em Lactose' },
+  { id: 'leite-evaporado', name: 'Leite Evaporado', category: 'Laticínios', reason: 'Rico em Lactose' },
   { id: 'iogurte-natural', name: 'Iogurte natural', category: 'Laticínios', reason: 'Rico em Lactose' },
   { id: 'iogurte-de-soja', name: 'Iogurte de soja', category: 'Laticínios', reason: 'Rico em GOS' },
+  { id: 'sorvete', name: 'Sorvete', category: 'Laticínios', reason: 'Rico em Lactose' },
+  { id: 'leitelho', name: 'Leitelho', category: 'Laticínios', reason: 'Rico em Lactose' },
+  { id: 'queijo-cottage', name: 'Queijo Cottage', category: 'Laticínios', reason: 'Rico em Lactose' },
+  { id: 'queijo-creme', name: 'Queijo Creme', category: 'Laticínios', reason: 'Rico em Lactose' },
+  { id: 'nata-chantilly', name: 'Nata / Chantilly', category: 'Laticínios', reason: 'Rico em Lactose' },
+  { id: 'pudim', name: 'Pudim', category: 'Laticínios', reason: 'Rico em Lactose' },
+  
+  // Bebidas
+  { id: 'rum', name: 'Rum', category: 'Bebidas', reason: 'Rico em Frutose' },
+  { id: 'vinho-generoso', name: 'Vinhos Generosos', category: 'Bebidas', reason: 'Rico em Frutose' },
+  { id: 'cha-camomila', name: 'Chá de Camomila', category: 'Bebidas', reason: 'Rico em Frutanos' },
+  { id: 'cha-oolong', name: 'Chá Oolong', category: 'Bebidas', reason: 'Rico em Frutanos' },
+  { id: 'cha-erva-doce', name: 'Chá de Erva-doce', category: 'Bebidas', reason: 'Rico em Frutanos' },
+  { id: 'cha-chai', name: 'Chá Chai', category: 'Bebidas', reason: 'Rico em Frutanos' },
+  { id: 'refrigerantes-frutose', name: 'Refrigerantes com frutose', category: 'Bebidas', reason: 'Rico em Frutose' },
 
   // Açúcares e Adoçantes
   { id: 'mel', name: 'Mel', category: 'Açúcares', reason: 'Rico em Frutose' },
-  { id: 'xarope-de-agave', name: 'Xarope de Agave', category: 'Açúcares', reason: 'Rico em Frutose' },
+  { id: 'xarope-agave', name: 'Xarope de Agave', category: 'Açúcares', reason: 'Rico em Frutose' },
+  { id: 'xarope-milho-frutose', name: 'Xarope de Milho Rico em Frutose', category: 'Açúcares', reason: 'Rico em Frutose' },
+  { id: 'melaco', name: 'Melaço', category: 'Açúcares', reason: 'Rico em Frutanos' },
+  { id: 'ketchup', name: 'Ketchup', category: 'Açúcares', reason: 'Rico em Frutanos' },
 
   // Aditivos
   { id: 'isomalte', name: 'Isomalte (E953)', category: 'Aditivos', reason: 'Poliol (Álcool de Açúcar)' },
