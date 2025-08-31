@@ -1,6 +1,7 @@
-// FIX: The PrismaClient should be imported from '@prisma/client'. The edge-compatible client
-// is resolved by Prisma's build process based on the schema configuration.
-// FIX: Corrected import path for PrismaClient. The client should always be imported from '@prisma/client'.
+// FIX: The import from '@prisma/client/edge' was causing a TypeScript error because
+// PrismaClient is not exported from that module. Changed to the standard '@prisma/client' import.
+// For this to work in an edge environment, the `schema.prisma` file must be correctly
+// configured with `engineType = "library"` in the `generator client` block.
 import { PrismaClient } from '@prisma/client';
 
 // PrismaClient is attached to the `global` object in development to prevent
