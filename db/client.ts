@@ -1,5 +1,6 @@
-// FIX: Changed import to use @prisma/client/edge which is required for edge environments like Vercel Serverless Functions.
-import { PrismaClient } from '@prisma/client/edge';
+// FIX: The PrismaClient should be imported from '@prisma/client'. The edge-compatible client
+// is resolved by Prisma's build process based on the schema configuration.
+import { PrismaClient } from '@prisma/client';
 
 // PrismaClient is attached to the `global` object in development to prevent
 // exhausting your database connection limit.

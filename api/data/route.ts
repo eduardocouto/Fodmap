@@ -2,7 +2,6 @@
 // In a real Next.js or SvelteKit project, this file would handle API requests.
 // For now, it demonstrates the structure and logic for database interaction.
 
-import { NextResponse } from 'next/server'; // Assuming Next.js-like environment for Vercel
 import prisma from '../../db/client'; // Import the singleton prisma client
 import type { AppData } from '../../types';
 
@@ -39,7 +38,7 @@ export async function GET() {
 
     if (!user) {
       // If user doesn't exist, we could create one or return a default state
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+      return new Response(JSON.stringify({ error: 'User not found' }), { status: 404, headers: { 'Content-Type': 'application/json' } });
     }
 
     const responseData: AppData = {
@@ -77,10 +76,10 @@ export async function GET() {
       mealHistory: (user.mealHistory as any) || [],
     };
 
-    return NextResponse.json(responseData);
+    return new Response(JSON.stringify(responseData), { status: 200, headers: { 'Content-Type': 'application/json' } });
   } catch (error) {
     console.error('GET /api/data error:', error);
-    return NextResponse.json({ error: 'Failed to fetch data' }, { status: 500 });
+    return new Response(JSON.stringify({ error: 'Failed to fetch data' }), { status: 500, headers: { 'Content-Type': 'application/json' } });
   }
 }
 
@@ -165,9 +164,9 @@ export async function POST(request: Request) {
       })
     ]);
 
-    return NextResponse.json({ message: 'Data saved successfully' }, { status: 200 });
+    return new Response(JSON.stringify({ message: 'Data saved successfully' }), { status: 200, headers: { 'Content-Type': 'application/json' } });
   } catch (error) {
     console.error('POST /api/data error:', error);
-    return NextResponse.json({ error: 'Failed to save data' }, { status: 500 });
+    return new Response(JSON.stringify({ error: 'Failed to save data' }), { status: 500, headers: { 'Content-Type': 'application/json' } });
   }
 }
