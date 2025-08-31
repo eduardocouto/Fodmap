@@ -1,5 +1,6 @@
 // FIX: The PrismaClient should be imported from '@prisma/client'. The edge-compatible client
 // is resolved by Prisma's build process based on the schema configuration.
+// FIX: Corrected import path for PrismaClient. The client should always be imported from '@prisma/client'.
 import { PrismaClient } from '@prisma/client';
 
 // PrismaClient is attached to the `global` object in development to prevent
