@@ -1,3 +1,5 @@
+
+
 export enum FodmapType {
   FRUCTANS = 'Frutanos',
   FRUCTOSE = 'Frutose',
@@ -7,6 +9,9 @@ export enum FodmapType {
   LACTOSE = 'Lactose',
 }
 
+export type Tab = 'report' | 'planner' | 'health';
+export type PlannerSubTab = 'builder' | 'guidedPlans' | 'generator' | 'weekly' | 'shopping' | 'customFood' | 'forbidden';
+export type HealthSubTab = 'overview' | 'activity' | 'symptoms' | 'medication' | 'documents';
 export type PlanTab = 'anti-inflammatory' | 'detox' | 'soups';
 
 export enum FructanGroup {
@@ -83,3 +88,78 @@ export type FoodCategory = 'Proteína' | 'Fruta' | 'Legumes' | 'Cereais' | 'Lati
 export type FoodPreferences = {
   [key in MealSlot]?: string[]; // Array of food IDs
 };
+
+// Types for Health Dashboard
+export interface Activity {
+  type: string;
+  date: string;
+  distance: number;
+  calories: number;
+  duration: string;
+  avgHeartRate: number;
+  maxHeartRate: number;
+  avgSpeed: number;
+  maxSpeed: number;
+}
+
+export interface BodyComposition {
+  date: string;
+  weightKg: number;
+  heightCm: number;
+  age: number;
+  bodyFatMassKg: number;
+  skeletalMuscleMassKg: number;
+  bmi: number;
+  bodyFatPercentage: number;
+  fitnessScore: number;
+  weightControlKg: number;
+  fatMassControlKg: number;
+  muscleControlKg: number;
+  metabolicAge: number;
+  normalRanges: {
+    weightKg: string;
+    skeletalMuscleMassKg: string;
+    bodyFatMassKg: string;
+    bmi: string;
+    bodyFatPercentage: string;
+  };
+}
+
+export interface SymptomLog {
+  id: string;
+  date: string;
+  notes: string;
+  bloating: number; // 0-5 scale
+  pain: number; // 0-5 scale
+  energy: number; // 0-5 scale
+  bristolStools: number[]; // 1-7, multiple per day
+  urinationFrequency: number; // 0-5 scale
+  urinationUrgency: number; // 0-5 scale
+}
+
+export interface MedicalDocument {
+    id: string;
+    fileName: string;
+    extractedText: string;
+}
+
+export interface MedicationLog {
+    id: string;
+    date: string;
+    name: string;
+    dosage: string;
+    frequency: string;
+}
+
+// Type for the entire application state
+export interface AppData {
+  weeklyPlan: WeeklyPlan;
+  customFoods: FoodItem[];
+  dailyCalorieGoal: number;
+  foodPreferences: FoodPreferences;
+  activityData: Activity[];
+  bodyCompositionData: BodyComposition | null;
+  symptomLogs: SymptomLog[];
+  medicalDocuments: MedicalDocument[];
+  medicationLogs: MedicationLog[];
+}

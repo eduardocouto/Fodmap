@@ -1,5 +1,5 @@
 {
-  "name": "FODMAP Meal Planner",
-  "description": "An application to help manage a FODMAP diet and plan meals by calculating FODMAP loads to avoid stacking. It includes a comprehensive database of foods and their safe serving sizes.",
+  "name": "IntelliGesto",
+  "description": "Your intelligent assistant for digestive wellness. Track symptoms, plan low-FODMAP meals, and correlate health data to find actionable insights.",
   "requestFramePermissions": []
 }
