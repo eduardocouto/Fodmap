@@ -26,6 +26,7 @@ const initialAppData: AppData = {
     symptomLogs: [],
     medicalDocuments: [],
     medicationLogs: [],
+    mealHistory: [],
 };
 
 const App: React.FC = () => {

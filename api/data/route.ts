@@ -56,6 +56,7 @@ export async function GET() {
       })),
       bodyCompositionData: user.bodyCompositions[0] ? {
           ...user.bodyCompositions[0],
+          // FIX: Corrected typo from user.bodyCompositionData to user.bodyCompositions
           date: user.bodyCompositions[0].date.toISOString(),
           normalRanges: user.bodyCompositions[0].normalRanges as any,
       } : null,
@@ -72,7 +73,8 @@ export async function GET() {
       medicationLogs: user.medicationLogs.map(log => ({
           ...log,
           date: log.date.toISOString().split('T')[0],
-      }))
+      })),
+      mealHistory: (user.mealHistory as any) || [],
     };
 
     return NextResponse.json(responseData);
@@ -92,13 +94,18 @@ export async function POST(request: Request) {
 
     const {
       weeklyPlan, customFoods, dailyCalorieGoal, foodPreferences,
-      activityData, bodyCompositionData, symptomLogs, medicalDocuments, medicationLogs
+      activityData, bodyCompositionData, symptomLogs, medicalDocuments, medicationLogs,
+      mealHistory
     } = data;
     
     await prisma.$transaction([
       prisma.user.update({
         where: { id: MOCK_USER_ID },
-        data: { dailyCalorieGoal, foodPreferences: foodPreferences || {} },
+        data: { 
+            dailyCalorieGoal, 
+            foodPreferences: foodPreferences || {},
+            mealHistory: mealHistory || []
+        },
       }),
       prisma.weeklyPlan.upsert({
         where: { userId: MOCK_USER_ID },

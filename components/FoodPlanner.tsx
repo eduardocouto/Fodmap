@@ -1,6 +1,6 @@
 
 import React, { useState, useMemo } from 'react';
-import type { AppData, MealItem, FoodItem, MealTemplate, WeeklyPlan, DayPlan, MealSlot, ShuffleOption, FoodFodmapInfo, FoodPreferences, PlannerSubTab, PlanTab } from '../types';
+import type { AppData, MealItem, FoodItem, MealTemplate, WeeklyPlan, DayPlan, MealSlot, ShuffleOption, FoodFodmapInfo, FoodPreferences, PlannerSubTab, PlanTab, HistoricalMeal } from '../types';
 import { MealSlot as MealSlotEnum, FodmapType, FructanGroup } from '../types';
 
 import MealBuilder from './MealBuilder';
@@ -17,6 +17,7 @@ import PlanGenerator from './PlanGenerator';
 import WeeklyPlanner from './WeeklyPlanner';
 import ShoppingList from './ShoppingList';
 import ForbiddenFoods from './ForbiddenFoods';
+import MealHistory from './MealHistory';
 
 
 const CustomFoodManager: React.FC<{
@@ -144,7 +145,7 @@ const FoodPlanner: React.FC<FoodPlannerProps> = ({ appData, updateAppData, meal,
     const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
     const [isGenerating, setIsGenerating] = useState<boolean>(false);
     
-    const { weeklyPlan, customFoods, dailyCalorieGoal, foodPreferences } = appData;
+    const { weeklyPlan, customFoods, dailyCalorieGoal, foodPreferences, mealHistory } = appData;
 
     const mealAnalysis = useMemo(() => {
         const { fodmapLoads, individualLoads } = calculateFodmapLoads(meal);
@@ -235,12 +236,54 @@ const FoodPlanner: React.FC<FoodPlannerProps> = ({ appData, updateAppData, meal,
     const saveMealToPlan = (days: string[], slot: MealSlot) => {
         const newPlan = { ...weeklyPlan };
         days.forEach(day => {
-        newPlan[day] = { ...newPlan[day], [slot]: meal };
+            newPlan[day] = { ...newPlan[day], [slot]: meal };
         });
-        updateAppData({ weeklyPlan: newPlan });
+
+        // Generate a name for the historical meal
+        const generateMealName = (mealItems: MealItem[]): string => {
+            if (mealItems.length === 0) return "Refeição Vazia";
+            const names = mealItems.slice(0, 3).map(item => item.food.name).join(', ');
+            return mealItems.length > 3 ? `${names}...` : names;
+        };
+
+        // Create new historical meal entry if meal is not empty
+        if (meal.length > 0) {
+            const newHistoricalMeal: HistoricalMeal = {
+                id: crypto.randomUUID(),
+                name: generateMealName(meal),
+                createdAt: new Date().toISOString(),
+                meal: meal,
+            };
+    
+            // Add to history, keeping only the last 15 entries
+            const updatedHistory = [newHistoricalMeal, ...(mealHistory || [])].slice(0, 15);
+            updateAppData({ weeklyPlan: newPlan, mealHistory: updatedHistory });
+        } else {
+            updateAppData({ weeklyPlan: newPlan });
+        }
+
         setIsSaveModalOpen(false);
         showToast('Refeição guardada com sucesso!', 'Ver Plano', () => setActiveSubTab('weekly'));
     };
+    
+    const handleLoadMealFromHistory = (historicalMeal: HistoricalMeal) => {
+        // Important: Create new instanceIds to avoid key collisions and other state issues
+        const newMealItems = historicalMeal.meal.map(item => ({
+            ...item,
+            instanceId: crypto.randomUUID(),
+        }));
+        setMeal(newMealItems);
+        showToast(`Refeição "${historicalMeal.name}" carregada.`);
+    };
+
+    const handleDeleteMealFromHistory = (mealId: string) => {
+        if (window.confirm("Tem a certeza que quer remover esta refeição do seu histórico?")) {
+            const updatedHistory = (mealHistory || []).filter(item => item.id !== mealId);
+            updateAppData({ mealHistory: updatedHistory });
+            showToast("Refeição removida do histórico.");
+        }
+    };
+
 
     const loadMealFromPlan = (mealToLoad: MealItem[]) => {
         setMeal(mealToLoad);
@@ -315,6 +358,11 @@ const FoodPlanner: React.FC<FoodPlannerProps> = ({ appData, updateAppData, meal,
                 <div className="space-y-8">
                     <QuickMealSelector onSelectMeal={addQuickMeal} />
                     <MealShuffler onShuffle={shuffleMeal} />
+                    <MealHistory 
+                        history={mealHistory || []}
+                        onLoad={handleLoadMealFromHistory}
+                        onDelete={handleDeleteMealFromHistory}
+                    />
                     <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
                     <div className="lg:col-span-3">
                         <MealBuilder

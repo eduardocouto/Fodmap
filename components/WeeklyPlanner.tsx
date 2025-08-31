@@ -1,7 +1,9 @@
+
 import React, { useState, useMemo } from 'react';
 import type { WeeklyPlan, MealSlot, MealItem, FoodItem } from '../types';
 import { MealSlot as MealSlotEnum } from '../types';
 import EditMealModal from './EditMealModal';
+import DayDetailModal from './DayDetailModal';
 import { calculateMealCalories } from '../utils/mealUtils';
 
 interface WeeklyPlannerProps {
@@ -20,10 +22,30 @@ const MEAL_SLOTS = [MealSlotEnum.BREAKFAST, MealSlotEnum.LUNCH, MealSlotEnum.AFT
 
 type CalorieStatus = 'good' | 'warning' | 'high';
 
+const MealSlotIcon: React.FC<{ slot: MealSlot; filled: boolean }> = ({ slot, filled }) => {
+    const icons: Record<MealSlot, React.ReactNode> = {
+      [MealSlotEnum.BREAKFAST]: <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>,
+      [MealSlotEnum.LUNCH]: <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.707.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 14.464A1 1 0 106.465 13.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zM5 10a1 1 0 01-1-1H3a1 1 0 110-2h1a1 1 0 011 1zM8 16a1 1 0 11-2 0v-1a1 1 0 112 0v1z" /></svg>,
+      [MealSlotEnum.DINNER]: <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" /></svg>,
+      [MealSlotEnum.AFTERNOON_SNACK]: <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" /></svg>,
+      [MealSlotEnum.SNACKS]: <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path d="M5 3a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 5h10v10H5V5z" /></svg>
+    };
+  
+    return (
+      <div className={`flex items-center gap-2 transition-colors ${filled ? 'text-gray-800 font-medium' : 'text-gray-400'}`}>
+        <div className={`flex-shrink-0 w-4 h-4 ${filled ? 'text-emerald-600' : 'text-gray-400'}`}>
+         {icons[slot]}
+        </div>
+        <span className="text-xs">{slot}</span>
+      </div>
+    );
+  };
+
 const WeeklyPlanner: React.FC<WeeklyPlannerProps> = ({ plan, onLoadMeal, onClearMealFromSlot, onClearAll, calorieGoal, onSetCalorieGoal, allFoods, onUpdateMealInPlan }) => {
   const [copyButtonText, setCopyButtonText] = useState('Copiar para a Área de Transferência');
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [mealToEdit, setMealToEdit] = useState<{day: string, slot: MealSlot, meal: MealItem[]} | null>(null);
+  const [selectedDay, setSelectedDay] = useState<string | null>(null);
 
   const isPlanEmpty = Object.keys(plan).length === 0;
 
@@ -47,7 +69,6 @@ const WeeklyPlanner: React.FC<WeeklyPlannerProps> = ({ plan, onLoadMeal, onClear
     onLoadMeal(meal);
     handleCloseEditModal();
   };
-
 
   const dailyTotals = useMemo(() => {
     const totals: { [day: string]: { calories: number; status: CalorieStatus } } = {};
@@ -119,7 +140,7 @@ const WeeklyPlanner: React.FC<WeeklyPlannerProps> = ({ plan, onLoadMeal, onClear
         <div>
           <h2 className="text-2xl font-semibold text-gray-800">Planeador Semanal</h2>
           <p className="mt-2 text-gray-600">
-            Organize as suas refeições para a semana. Guarde refeições do construtor e veja a sua semana de relance.
+            Organize as suas refeições para a semana. Clique num dia para ver e editar os detalhes.
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
@@ -141,49 +162,36 @@ const WeeklyPlanner: React.FC<WeeklyPlannerProps> = ({ plan, onLoadMeal, onClear
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-4">
         {DAYS_OF_WEEK.map(day => (
-          <div key={day} className="bg-gray-50 p-4 rounded-lg border border-gray-200 flex flex-col">
+          <button
+            key={day}
+            onClick={() => setSelectedDay(day)}
+            className="bg-gray-50 p-4 rounded-lg border-2 border-gray-200 flex flex-col text-left hover:border-emerald-500 hover:bg-emerald-50 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all duration-200"
+            aria-label={`Ver detalhes de ${day}`}
+          >
             <h3 className="text-lg font-bold text-center text-gray-700 mb-2 border-b pb-2">{day}</h3>
             <div className="text-center mb-3">
-              <span className={`inline-block text-sm font-bold px-3 py-1 rounded-full ${statusClasses[dailyTotals[day].status]}`}>
+              <span className={`inline-block text-xs font-bold px-2 py-1 rounded-full ${statusClasses[dailyTotals[day].status]}`}>
                 {dailyTotals[day].calories} / {calorieGoal} kcal
               </span>
             </div>
-            <div className="space-y-1">
-              {MEAL_SLOTS.map((slot, index) => {
-                const meal = plan[day]?.[slot];
-                return (
-                  <React.Fragment key={slot}>
-                    <div className="border-t pt-2 min-h-[60px]">
-                      <h4 className="font-semibold text-emerald-700">{slot}</h4>
-                      {meal && meal.length > 0 ? (
-                        <div className="mt-2 text-sm space-y-2">
-                          <ul className="list-disc list-inside text-gray-600 space-y-1">
-                            {meal.map(item => (
-                              <li key={item.instanceId}>{item.food.name} ({item.currentAmount}{item.food.unit})</li>
-                            ))}
-                          </ul>
-                          <div className="flex space-x-2 mt-3">
-                             <button onClick={() => handleOpenEditModal(day, slot, meal)} className="text-sm font-semibold bg-emerald-100 text-emerald-800 px-3 py-1.5 rounded-md hover:bg-emerald-200 transition"> Editar </button>
-                            <button onClick={() => onClearMealFromSlot(day, slot)} className="text-sm font-semibold bg-red-100 text-red-800 px-3 py-1.5 rounded-md hover:bg-red-200 transition"> Limpar </button>
-                          </div>
-                        </div>
-                      ) : (
-                        <p className="text-xs text-gray-400 italic mt-1">Vazio</p>
-                      )}
-                    </div>
-                    {index < MEAL_SLOTS.length - 1 && (
-                      <div className="flex items-center justify-center my-1 text-xs text-gray-400 py-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                        <span>Intervalo 2.5-3h</span>
-                      </div>
-                    )}
-                  </React.Fragment>
-                );
-              })}
+            <div className="space-y-2 flex-grow mt-2">
+              {MEAL_SLOTS.map(slot => (
+                <MealSlotIcon key={slot} slot={slot} filled={!!plan[day]?.[slot] && plan[day]![slot]!.length > 0} />
+              ))}
             </div>
-          </div>
+          </button>
         ))}
       </div>
+
+      <DayDetailModal
+        isOpen={selectedDay !== null}
+        onClose={() => setSelectedDay(null)}
+        day={selectedDay}
+        dayPlan={selectedDay ? plan[selectedDay] : undefined}
+        onEditMeal={handleOpenEditModal}
+        onClearMeal={onClearMealFromSlot}
+      />
+      
       <EditMealModal
         isOpen={isEditModalOpen}
         onClose={handleCloseEditModal}

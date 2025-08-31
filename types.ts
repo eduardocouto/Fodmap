@@ -151,6 +151,13 @@ export interface MedicationLog {
     frequency: string;
 }
 
+export interface HistoricalMeal {
+  id: string;
+  name: string;
+  createdAt: string; // ISO string date
+  meal: MealItem[];
+}
+
 // Type for the entire application state
 export interface AppData {
   weeklyPlan: WeeklyPlan;
@@ -162,4 +169,5 @@ export interface AppData {
   symptomLogs: SymptomLog[];
   medicalDocuments: MedicalDocument[];
   medicationLogs: MedicationLog[];
+  mealHistory: HistoricalMeal[];
 }
