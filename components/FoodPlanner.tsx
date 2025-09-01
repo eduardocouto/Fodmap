@@ -1,7 +1,10 @@
 
+
+
 import React, { useState, useMemo } from 'react';
 import type { AppData, MealItem, FoodItem, MealTemplate, WeeklyPlan, DayPlan, MealSlot, ShuffleOption, FoodFodmapInfo, FoodPreferences, PlannerSubTab, PlanTab, HistoricalMeal } from '../types';
 import { MealSlot as MealSlotEnum, FodmapType, FructanGroup } from '../types';
+import { GoogleGenAI, Type } from "@google/genai";
 
 import MealBuilder from './MealBuilder';
 import MealSummary from './MealSummary';
@@ -19,6 +22,7 @@ import ShoppingList from './ShoppingList';
 import ForbiddenFoods from './ForbiddenFoods';
 import MealHistory from './MealHistory';
 
+const ai = new GoogleGenAI({ apiKey: process.env.API_KEY as string });
 
 const CustomFoodManager: React.FC<{
   customFoods: FoodItem[];
@@ -145,7 +149,7 @@ const FoodPlanner: React.FC<FoodPlannerProps> = ({ appData, updateAppData, meal,
     const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
     const [isGenerating, setIsGenerating] = useState<boolean>(false);
     
-    const { weeklyPlan, customFoods, dailyCalorieGoal, foodPreferences, mealHistory } = appData;
+    const { weeklyPlan, customFoods, dailyCalorieGoal, foodPreferences, mealHistory, basalMetabolicRate } = appData;
 
     const mealAnalysis = useMemo(() => {
         const { fodmapLoads, individualLoads } = calculateFodmapLoads(meal);
@@ -317,10 +321,131 @@ const FoodPlanner: React.FC<FoodPlannerProps> = ({ appData, updateAppData, meal,
         showToast('Refeição atualizada no plano!');
     };
     
-    const generateWeeklyPlan = () => {
-        // This is a simplified version of the generation logic from App.tsx
-        // It should be moved here completely.
-        showToast("Gerador de planos ainda em implementação nesta nova estrutura.");
+    const generateWeeklyPlan = async () => {
+        setIsGenerating(true);
+        try {
+            const foodListForPrompt = combinedFoods.map(f => ({ 
+                id: f.id, 
+                name: f.name, 
+                category: f.category,
+                calories: f.calories, 
+                unit: f.unit, 
+                fodmaps: f.fodmaps.map(fm => fm.type),
+                safeAmount: f.safeAmount 
+            }));
+
+            const preferencesForPrompt = Object.entries(foodPreferences)
+                .map(([slot, foodIds]) => {
+                    const foodNames = foodIds.map(id => combinedFoods.find(f => f.id === id)?.name).filter(Boolean);
+                    if (foodNames.length > 0) {
+                        return `${slot}: ${foodNames.join(', ')}`;
+                    }
+                    return null;
+                })
+                .filter(Boolean)
+                .join('\n');
+
+            const prompt = `
+                Como um nutricionista especialista em dietas low-FODMAP, crie um plano de refeições variado para 7 dias para um utilizador.
+
+                **A REGRA MAIS IMPORTANTE E OBRIGATÓRIA:**
+                Cada Almoço e cada Jantar DEVE OBRIGATORIAMENTE conter pelo menos uma fonte de proteína, uma fonte de hidratos de carbono (da categoria 'Cereais') e uma fonte de vegetais (da categoria 'Legumes'). A falha em cumprir esta regra para CADA refeição principal resultará num plano inválido. Esta regra tem prioridade sobre todas as outras.
+
+                OUTRAS REGRAS A SEGUIR:
+                1.  **Objetivo Calórico:** O plano diário deve ter como alvo aproximadamente ${basalMetabolicRate || 1800} kcal.
+                2.  **Preferências:** Use os alimentos preferidos do utilizador como base para as refeições. Preferências do utilizador:
+                    ${preferencesForPrompt || 'Nenhuma preferência específica fornecida. Crie um plano equilibrado e variado.'}
+                3.  **Lógica das Outras Refeições:** Crie refeições convencionais e lógicas (ex: sem sopa ao pequeno-almoço). Para Pequeno-almoço e Lanches, crie combinações equilibradas.
+                4.  **Variedade:** Evite repetir as mesmas refeições todos os dias.
+                5.  **Segurança FODMAP:** Para alimentos com FODMAPs, use apenas as quantidades seguras (safeAmount) da lista de alimentos.
+                6.  **Formato de Saída:** Responda APENAS com o objeto JSON, seguindo estritamente o schema fornecido.
+
+                Lista de Alimentos Disponíveis (com id, nome, categoria, calorias, unidade, fodmaps e dose segura):
+                ${JSON.stringify(foodListForPrompt, null, 2)}
+            `;
+
+            const mealItemSchema = {
+                type: Type.OBJECT,
+                properties: {
+                    foodId: { type: Type.STRING, description: "O ID do alimento da lista fornecida." },
+                    amount: { type: Type.NUMBER, description: "A quantidade do alimento, na unidade especificada." },
+                },
+                required: ['foodId', 'amount']
+            };
+
+            const mealSchema = { type: Type.ARRAY, items: mealItemSchema };
+
+            const dayPlanSchemaProperties: Record<string, object> = {};
+            [MealSlotEnum.BREAKFAST, MealSlotEnum.LUNCH, MealSlotEnum.DINNER, MealSlotEnum.SNACKS, MealSlotEnum.AFTERNOON_SNACK].forEach(slot => {
+                dayPlanSchemaProperties[slot] = mealSchema;
+            });
+
+            const dayPlanSchema = { type: Type.OBJECT, properties: dayPlanSchemaProperties };
+            
+            const weeklyPlanSchemaProperties: Record<string, object> = {};
+            ['Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado', 'Domingo'].forEach(day => {
+                weeklyPlanSchemaProperties[day] = dayPlanSchema;
+            });
+            
+            const responseSchema = {
+                type: Type.OBJECT,
+                properties: {
+                    plan: {
+                        type: Type.OBJECT,
+                        properties: weeklyPlanSchemaProperties
+                    }
+                },
+                required: ['plan']
+            };
+            
+            const response = await ai.models.generateContent({
+                model: 'gemini-2.5-flash',
+                contents: prompt,
+                config: { responseMimeType: "application/json", responseSchema },
+            });
+
+            const aiPlan = JSON.parse(response.text)?.plan;
+            if (!aiPlan) {
+                throw new Error("A IA não conseguiu gerar um plano com as opções selecionadas. Por favor, selecione mais alimentos, especialmente das categorias Proteína, Cereais e Legumes.");
+            }
+            
+            const newWeeklyPlan: WeeklyPlan = {};
+
+            for (const day in aiPlan) {
+                newWeeklyPlan[day] = {};
+                for (const slot in aiPlan[day]) {
+                    const mealItemsFromAI = aiPlan[day][slot];
+                    if (mealItemsFromAI && Array.isArray(mealItemsFromAI) && mealItemsFromAI.length > 0) {
+                        const mealItems: MealItem[] = mealItemsFromAI.map((item: { foodId: string; amount: number; }): MealItem | null => {
+                            const food = combinedFoods.find(f => f.id === item.foodId);
+                            if (!food) {
+                                console.warn(`AI generated a meal with an unknown foodId: ${item.foodId}`);
+                                return null;
+                            };
+                            return {
+                                instanceId: crypto.randomUUID(),
+                                food: food,
+                                currentAmount: item.amount,
+                            };
+                        }).filter((item): item is MealItem => item !== null);
+                        
+                        if (mealItems.length > 0) {
+                            newWeeklyPlan[day][slot as MealSlot] = mealItems;
+                        }
+                    }
+                }
+            }
+
+            updateAppData({ weeklyPlan: newWeeklyPlan });
+            showToast("Plano semanal gerado com sucesso!", "Ver Plano", () => setActiveSubTab('weekly'));
+
+        } catch (error) {
+            console.error("Error generating weekly plan:", error);
+            const errorMessage = error instanceof Error ? error.message : "Ocorreu um erro ao gerar o plano. Tente novamente ou ajuste as suas preferências.";
+            showToast(errorMessage, "Tentar de Novo", generateWeeklyPlan);
+        } finally {
+            setIsGenerating(false);
+        }
     };
     
     const getSubTabClassName = (tabName: PlannerSubTab) => {
@@ -422,6 +547,8 @@ const FoodPlanner: React.FC<FoodPlannerProps> = ({ appData, updateAppData, meal,
                     onPreferencesChange={(prefs) => updateAppData({ foodPreferences: prefs })}
                     onGeneratePlan={generateWeeklyPlan}
                     isGenerating={isGenerating}
+                    basalMetabolicRate={basalMetabolicRate || 1800}
+                    onBmrChange={(value) => updateAppData({ basalMetabolicRate: value })}
                 />
             )}
 

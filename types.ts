@@ -163,6 +163,7 @@ export interface AppData {
   weeklyPlan: WeeklyPlan;
   customFoods: FoodItem[];
   dailyCalorieGoal: number;
+  basalMetabolicRate: number;
   foodPreferences: FoodPreferences;
   activityData: Activity[];
   bodyCompositionData: BodyComposition | null;

@@ -1,3 +1,4 @@
+
 import React, { useMemo } from 'react';
 import type { FoodItem, FoodPreferences, MealSlot, FoodCategory } from '../types';
 import { MealSlot as MealSlotEnum } from '../types';
@@ -8,6 +9,8 @@ interface PlanGeneratorProps {
     onPreferencesChange: (prefs: FoodPreferences) => void;
     onGeneratePlan: () => void;
     isGenerating: boolean;
+    basalMetabolicRate: number;
+    onBmrChange: (value: number) => void;
 }
 
 const FOOD_CATEGORIES: FoodCategory[] = [
@@ -24,7 +27,7 @@ const MEAL_SLOTS_ORDER: MealSlot[] = [
     MealSlotEnum.AFTERNOON_SNACK,
 ];
 
-const PlanGenerator: React.FC<PlanGeneratorProps> = ({ allFoods, preferences, onPreferencesChange, onGeneratePlan, isGenerating }) => {
+const PlanGenerator: React.FC<PlanGeneratorProps> = ({ allFoods, preferences, onPreferencesChange, onGeneratePlan, isGenerating, basalMetabolicRate, onBmrChange }) => {
     
     const foodsByCategory = useMemo(() => {
         const grouped: { [key in FoodCategory]?: FoodItem[] } = {};
@@ -52,11 +55,27 @@ const PlanGenerator: React.FC<PlanGeneratorProps> = ({ allFoods, preferences, on
     return (
         <div className="bg-white p-6 rounded-lg shadow space-y-8">
             <div>
-                <h2 className="text-2xl font-semibold text-gray-800">Gerador de Plano Semanal</h2>
+                <h2 className="text-2xl font-semibold text-gray-800">Gerador de Plano Semanal (IA)</h2>
                 <p className="mt-2 text-gray-600">
-                    Selecione os alimentos que mais gosta para cada refeição. Com base nas suas escolhas, criaremos um plano semanal variado e com as quantidades de FODMAPs ajustadas automaticamente. As suas preferências são guardadas.
+                    Insira o seu metabolismo basal e selecione os alimentos que mais gosta para cada refeição. A nossa IA criará um plano semanal variado, equilibrado e com as doses de FODMAPs ajustadas. As suas preferências são guardadas.
                 </p>
             </div>
+
+            <div className="p-4 bg-gray-100 rounded-lg flex flex-col sm:flex-row items-center gap-4">
+                <label htmlFor="bmr-input" className="font-semibold text-gray-700 whitespace-nowrap">
+                    Metabolismo Basal (BMR):
+                </label>
+                <input 
+                  id="bmr-input"
+                  type="number"
+                  value={basalMetabolicRate}
+                  onChange={(e) => onBmrChange(parseInt(e.target.value, 10) || 0)}
+                  className="w-full sm:w-48 px-3 py-1.5 border border-gray-300 rounded-lg bg-white text-gray-800 focus:ring-2 focus:ring-emerald-500"
+                  placeholder="Ex: 1800"
+                />
+                <span className="text-gray-600 font-medium">kcal / dia</span>
+            </div>
+
 
             <div className="space-y-8">
                 {MEAL_SLOTS_ORDER.map(slot => (

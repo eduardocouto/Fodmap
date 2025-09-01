@@ -1,3 +1,4 @@
+
 // This is a placeholder for a Vercel Serverless Function.
 // In a real Next.js or SvelteKit project, this file would handle API requests.
 // For now, it demonstrates the structure and logic for database interaction.
@@ -48,6 +49,7 @@ export async function GET() {
         fodmaps: food.fodmaps as any, // Cast from Json
       })),
       dailyCalorieGoal: user.dailyCalorieGoal,
+      basalMetabolicRate: user.basalMetabolicRate || 1800,
       foodPreferences: (user.foodPreferences as any) || {},
       activityData: user.activities.map(act => ({
           ...act,
@@ -94,7 +96,7 @@ export async function POST(request: Request) {
     const {
       weeklyPlan, customFoods, dailyCalorieGoal, foodPreferences,
       activityData, bodyCompositionData, symptomLogs, medicalDocuments, medicationLogs,
-      mealHistory
+      mealHistory, basalMetabolicRate
     } = data;
     
     await prisma.$transaction([
@@ -102,6 +104,7 @@ export async function POST(request: Request) {
         where: { id: MOCK_USER_ID },
         data: { 
             dailyCalorieGoal, 
+            basalMetabolicRate,
             foodPreferences: foodPreferences || {},
             mealHistory: mealHistory || []
         },

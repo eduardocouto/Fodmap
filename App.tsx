@@ -20,6 +20,7 @@ const initialAppData: AppData = {
     weeklyPlan: {},
     customFoods: [],
     dailyCalorieGoal: 2000,
+    basalMetabolicRate: 1800,
     foodPreferences: {},
     activityData: [],
     bodyCompositionData: null,
